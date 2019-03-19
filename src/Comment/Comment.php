@@ -1,6 +1,6 @@
 <?php
 
-namespace srag\CommentsUI;
+namespace srag\CommentsUI\Comment;
 
 use ActiveRecord;
 use arConnector;
@@ -10,7 +10,7 @@ use srag\DIC\DICTrait;
 /**
  * Class Comment
  *
- * @package srag\CommentsUI
+ * @package srag\CommentsUI\Comment
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

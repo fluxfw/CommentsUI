@@ -1,17 +1,17 @@
 <?php
 
-namespace srag\CommentsUI;
+namespace srag\CommentsUI\UI;
 
 use srag\DIC\DICTrait;
 
 /**
- * Class Factory
+ * Class UI
  *
- * @package srag\CommentsUI
+ * @package srag\CommentsUI\UI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class Factory {
+final class UI {
 
 	use DICTrait;
 	/**
@@ -23,7 +23,7 @@ final class Factory {
 	/**
 	 * @return self
 	 */
-	public static function getInstance() {
+	public static function getInstance(): self {
 		if (self::$instance === null) {
 			self::$instance = new self();
 		}
@@ -33,19 +33,9 @@ final class Factory {
 
 
 	/**
-	 * Factory constructor
+	 * UI constructor
 	 */
-	private function __construct() {
+	public function __construct() {
 
-	}
-
-
-	/**
-	 * @return Comment
-	 */
-	public function newInstance(): Comment {
-		$comment = new Comment();
-
-		return $comment;
 	}
 }

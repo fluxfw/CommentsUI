@@ -1,14 +1,14 @@
 <?php
 
-namespace srag\CommentsUI;
+namespace srag\CommentsUI\Utils;
 
-use srag\CommentsUI\Repository as CommentsRepository;
-use srag\CommentsUI\UI as CommentsUI;
+use srag\CommentsUI\Comment\Repository as CommentsRepository;
+use srag\CommentsUI\UI\UI as CommentsUI;
 
 /**
  * Trait CommentsUITrait
  *
- * @package srag\CommentsUI
+ * @package srag\CommentsUI\Utils
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

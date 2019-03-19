@@ -1,13 +1,13 @@
 <?php
 
-namespace srag\CommentsUI;
+namespace srag\CommentsUI\Comment;
 
 use srag\DIC\DICTrait;
 
 /**
  * Class Repository
  *
- * @package srag\CommentsUI
+ * @package srag\CommentsUI\Comment
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
