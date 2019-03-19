@@ -87,18 +87,18 @@ final class Repository {
 
 
 	/**
-	 * @param int $report_ref_id
+	 * @param int $report_obj_id
 	 * @param int $report_user_id
 	 *
 	 * @return Comment[]
 	 */
-	public function getCommentsForReportUser(int $report_ref_id, int $report_user_id): array {
+	public function getCommentsForReport(int $report_obj_id, int $report_user_id): array {
 		/**
 		 * @var Comment[] $comments
 		 */
 
 		$comments = Comment::where([
-			"report_ref_id" => $report_ref_id,
+			"report_obj_id" => $report_obj_id,
 			"report_user_id" => $report_user_id
 		])->orderBy("updated_timestamp", "desc")->get();
 
