@@ -17,6 +17,17 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
+Your class in this you want to use CommentsUI needs to use the trait `CommentsUITrait`
+```php
+...
+use srag\CommentsUI\x\CommentsUITrait;
+...
+class x {
+...
+use CommentsUITrait;
+...
+```
+
 ### Dependencies
 * ILIAS 5.3 or ILIAS 5.4
 * PHP >=7.0
