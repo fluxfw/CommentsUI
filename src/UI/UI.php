@@ -2,6 +2,7 @@
 
 namespace srag\CommentsUI\UI;
 
+use ilTemplate;
 use srag\CommentsUI\Comment\Comment;
 use srag\DIC\DICTrait;
 
@@ -15,6 +16,10 @@ use srag\DIC\DICTrait;
 class UI {
 
 	use DICTrait;
+	/**
+	 * @var bool
+	 */
+	protected static $init = false;
 	/**
 	 * @var Comment[]
 	 */
@@ -42,9 +47,31 @@ class UI {
 
 
 	/**
+	 *
+	 */
+	private function initJs()/*: void*/ {
+		if (self::$init === false) {
+			self::$init = true;
+
+			$dir = __DIR__;
+			$dir = "./" . substr($dir, strpos($dir, "/Customizing/") + 1);
+
+			self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/jquery-comments/js/jquery-comments.js");
+			self::dic()->mainTemplate()->addCss($dir . "/../../node_modules/jquery-comments/css/jquery-comments.css");
+
+			self::dic()->mainTemplate()->addCss($dir . "/../../css/commentsui.css");
+		}
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function render(): string {
-		return "TODO";
+		$this->initJs();
+
+		$tpl = new ilTemplate(__DIR__ . "/../../templates/commentsui.html", false, false);
+
+		return self::output()->getHTML($tpl);
 	}
 }
