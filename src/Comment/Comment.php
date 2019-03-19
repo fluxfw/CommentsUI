@@ -5,7 +5,9 @@ namespace srag\CommentsUI\Comment;
 use ActiveRecord;
 use arConnector;
 use ilDateTime;
+use JsonSerializable;
 use srag\DIC\DICTrait;
+use stdClass;
 
 /**
  * Class Comment
@@ -14,7 +16,7 @@ use srag\DIC\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class Comment extends ActiveRecord {
+abstract class Comment extends ActiveRecord implements JsonSerializable {
 
 	use DICTrait;
 	/**
@@ -55,6 +57,23 @@ abstract class Comment extends ActiveRecord {
 	 */
 	protected $id;
 	/**
+	 * @var string
+	 *
+	 * @con_has_field   true
+	 * @con_fieldtype   text
+	 * @con_is_notnull  true
+	 */
+	protected $comment = "";
+	/**
+	 * @var int
+	 *
+	 * @con_has_field   true
+	 * @con_fieldtype   integer
+	 * @con_length      8
+	 * @con_is_notnull  true
+	 */
+	protected $report_obj_id;
+	/**
 	 * @var int
 	 *
 	 * @con_has_field   true
@@ -63,14 +82,6 @@ abstract class Comment extends ActiveRecord {
 	 * @con_is_notnull  true
 	 */
 	protected $report_user_id;
-	/**
-	 * @var string
-	 *
-	 * @con_has_field   true
-	 * @con_fieldtype   text
-	 * @con_is_notnull  true
-	 */
-	protected $comment = "";
 	/**
 	 * @var int
 	 *
@@ -162,6 +173,7 @@ abstract class Comment extends ActiveRecord {
 		$field_name, $field_value) {
 		switch ($field_name) {
 			case "id":
+			case "report_obj_id":
 			case "report_user_id":
 			case "created_user_id":
 			case "updated_user_id":
@@ -210,6 +222,22 @@ abstract class Comment extends ActiveRecord {
 	 */
 	public function setComment(string $comment)/*: void*/ {
 		$this->comment = $comment;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getReportObjId(): int {
+		return $this->report_obj_id;
+	}
+
+
+	/**
+	 * @param int $report_obj_id
+	 */
+	public function setReportObjId(int $report_obj_id)/*: void*/ {
+		$this->report_obj_id = $report_obj_id;
 	}
 
 
@@ -306,5 +334,18 @@ abstract class Comment extends ActiveRecord {
 	 */
 	public function setIsShared(bool $is_shared)/*: void*/ {
 		$this->is_shared = $is_shared;
+	}
+
+
+	/**
+	 * @return stdClass
+	 */
+	public function jsonSerialize(): stdClass {
+		return (object)[
+			"id" => $this->id,
+			"created" => $this->created_timestamp,
+			"content" => $this->comment,
+			"fullname" => $this->created_user_id
+		];
 	}
 }

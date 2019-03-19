@@ -87,16 +87,20 @@ final class Repository {
 
 
 	/**
+	 * @param int $report_ref_id
 	 * @param int $report_user_id
 	 *
 	 * @return Comment[]
 	 */
-	public function getCommentsForReportUser(int $report_user_id): array {
+	public function getCommentsForReportUser(int $report_ref_id, int $report_user_id): array {
 		/**
 		 * @var Comment[] $comments
 		 */
 
-		$comments = Comment::where([ "report_user_id" => $report_user_id ])->get();
+		$comments = Comment::where([
+			"report_ref_id" => $report_ref_id,
+			"report_user_id" => $report_user_id
+		])->get();
 
 		return $comments;
 	}
@@ -110,7 +114,10 @@ final class Repository {
 		 * @var Comment[] $comments
 		 */
 
-		$comments = Comment::where([ "is_shared" => true ])->get();
+		$comments = Comment::where([
+			"report_user_id" => self::dic()->user()->getId(),
+			"is_shared" => true
+		])->get();
 
 		return $comments;
 	}
