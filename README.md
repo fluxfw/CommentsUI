@@ -33,6 +33,7 @@ use CommentsUITrait;
 * PHP >=7.0
 * [composer](https://getcomposer.org)
 * [npm](https://nodejs.org)
+* [jquery-comments](https://www.npmjs.com/package/jquery-comments)
 * [srag/dic](https://packagist.org/packages/srag/dic)
 
 Please use it for further development!

@@ -2,6 +2,7 @@
 
 namespace srag\CommentsUI\UI;
 
+use srag\CommentsUI\Comment\Comment;
 use srag\DIC\DICTrait;
 
 /**
@@ -11,25 +12,13 @@ use srag\DIC\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class UI {
+class UI {
 
 	use DICTrait;
 	/**
-	 * @var self
+	 * @var Comment[]
 	 */
-	protected static $instance = null;
-
-
-	/**
-	 * @return self
-	 */
-	public static function getInstance(): self {
-		if (self::$instance === null) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
+	protected $comments = [];
 
 
 	/**
@@ -37,5 +26,25 @@ final class UI {
 	 */
 	public function __construct() {
 
+	}
+
+
+	/**
+	 * @param Comment[] $comments
+	 *
+	 * @return self
+	 */
+	public function withComments(array $comments): self {
+		$this->comments = $comments;
+
+		return $this;
+	}
+
+
+	/**
+	 * @return string
+	 */
+	public function render(): string {
+		return "TODO";
 	}
 }
