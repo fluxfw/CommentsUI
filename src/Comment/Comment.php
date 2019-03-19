@@ -343,7 +343,7 @@ abstract class Comment extends ActiveRecord implements JsonSerializable {
 	public function jsonSerialize(): stdClass {
 		return (object)[
 			"id" => $this->id,
-			"created" => $this->created_timestamp,
+			"created" => $this->updated_timestamp,
 			"content" => $this->comment,
 			"fullname" => self::dic()->objDataCache()->lookupTitle($this->created_user_id)
 		];

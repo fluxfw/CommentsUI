@@ -80,7 +80,7 @@ final class Repository {
 		 * @var Comment[] $comments
 		 */
 
-		$comments = Comment::get();
+		$comments = Comment::orderBy("updated_timestamp", "desc")->get();
 
 		return $comments;
 	}
@@ -100,7 +100,7 @@ final class Repository {
 		$comments = Comment::where([
 			"report_ref_id" => $report_ref_id,
 			"report_user_id" => $report_user_id
-		])->get();
+		])->orderBy("updated_timestamp", "desc")->get();
 
 		return $comments;
 	}
@@ -117,7 +117,7 @@ final class Repository {
 		$comments = Comment::where([
 			"report_user_id" => self::dic()->user()->getId(),
 			"is_shared" => true
-		])->get();
+		])->orderBy("updated_timestamp", "desc")->get();
 
 		return $comments;
 	}
