@@ -107,17 +107,26 @@ final class Repository {
 
 
 	/**
+	 * @param int|null $report_obj_id
+	 *
 	 * @return Comment[]
 	 */
-	public function getCommentsForCurrentUser(): array {
+	public function getCommentsForCurrentUser(/*?int*/
+		$report_obj_id = null): array {
 		/**
 		 * @var Comment[] $comments
 		 */
 
-		$comments = Comment::where([
+		$where = [
 			"report_user_id" => self::dic()->user()->getId(),
 			"is_shared" => true
-		])->orderBy("updated_timestamp", "desc")->get();
+		];
+
+		if (!empty($report_obj_id)) {
+			$where["report_obj_id"] = $report_obj_id;
+		}
+
+		$comments = Comment::where($where)->orderBy("updated_timestamp", "desc")->get();
 
 		return $comments;
 	}
