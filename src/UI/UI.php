@@ -59,6 +59,7 @@ class UI {
 			self::dic()->mainTemplate()->addJavaScript($dir . "/../../node_modules/jquery-comments/js/jquery-comments.js");
 			self::dic()->mainTemplate()->addCss($dir . "/../../node_modules/jquery-comments/css/jquery-comments.css");
 
+			self::dic()->mainTemplate()->addJavaScript($dir . "/../../js/commentsui.min.js");
 			self::dic()->mainTemplate()->addCss($dir . "/../../css/commentsui.css");
 		}
 	}
