@@ -345,7 +345,7 @@ abstract class Comment extends ActiveRecord implements JsonSerializable {
 			"id" => $this->id,
 			"created" => $this->created_timestamp,
 			"content" => $this->comment,
-			"fullname" => $this->created_user_id
+			"fullname" => self::dic()->objDataCache()->lookupTitle($this->created_user_id)
 		];
 	}
 }
