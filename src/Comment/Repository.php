@@ -62,9 +62,10 @@ final class Repository {
 			return true;
 		}
 
-		if ($comment->isShared() || $comment->isDeleted()) {
+		// TODO
+		/*if ($comment->isShared() || $comment->isDeleted()) {
 			return false;
-		}
+		}*/
 
 		if ($comment->getCreatedUserId() !== intval(self::dic()->user()->getId())) {
 			return false;

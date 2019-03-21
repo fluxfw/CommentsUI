@@ -62,22 +62,29 @@ il.CommentsUI.prototype = {
 			type: "post",
 			url: this.async_base_url + "&cmd=createComment",
 			data: comment,
-			success: onSuccess,
+			success: function (comment) {
+				onSuccess(comment);
+
+				// TODO
+				//this.getCommentsUpdate();
+			},
 			error: onError
 		});
 	},
 
 	/**
 	 * @param {Object} comment
-	 * @param {function} onSuccess
-	 * @param {function} onError
+	 * @param {jQuery} commentElement
 	 */
-	deleteComment: function (comment, onSuccess, onError) {
+	deleteComment: function (comment, commentElement) {
 		$.ajax({
 			type: "post",
 			url: this.async_base_url + "&cmd=deleteComment&comment_id=" + comment.id,
-			success: onSuccess,
-			error: onError
+			success: function () {
+				commentElement.remove();
+			},
+			error: function () {
+			}
 		});
 	},
 
@@ -89,9 +96,45 @@ il.CommentsUI.prototype = {
 		$.ajax({
 			type: "get",
 			url: this.async_base_url + "&cmd=getComments",
-			success: onSuccess,
+			success: function (comments) {
+				onSuccess(comments);
+
+				this.getCommentsUpdate(comments);
+			}.bind(this),
 			error: onError
 		});
+	},
+
+	/**
+	 * @param {Array} comments
+	 */
+	getCommentsUpdate: function (comments) {
+		if (!this.readonly) {
+			comments.forEach(function (comment) {
+				var commentElement = $(".comment[data-id=" + comment.id + "]", this.element);
+				var actions = $(" .actions", commentElement);
+
+				if (comment.deletable) {
+					// Delete
+					var deleteButton = $('<button/>', {
+						class: "action delete",
+						text: "Delete",
+					});
+					deleteButton.on("click", this.deleteComment.bind(this, comment, commentElement));
+					actions.append(deleteButton);
+				}
+
+				// Share
+				if (!comment.is_shared) {
+					var shareButton = $('<button/>', {
+						class: "action share",
+						text: "Share",
+					});
+					shareButton.on("click", this.shareComment.bind(this, comment, shareButton));
+					actions.append(shareButton);
+				}
+			}, this);
+		}
 	},
 
 	/**
@@ -103,11 +146,11 @@ il.CommentsUI.prototype = {
 		}
 
 		this.element.comments({
-			enableDeleting: !this.readonly,
 			enableEditing: !this.readonly,
 
 			forceResponsive: false,
 			enableAttachments: false,
+			enableDeleting: false,
 			enableDeletingCommentWithReplies: false,
 			enableHashtags: false,
 			enableNavigation: false,
@@ -119,22 +162,23 @@ il.CommentsUI.prototype = {
 
 			getComments: this.getComments.bind(this),
 			postComment: this.createComment.bind(this),
-			putComment: this.updateComment.bind(this),
-			deleteComment: this.deleteComment.bind(this)
+			putComment: this.updateComment.bind(this)
 		});
 	},
 
 	/**
 	 * @param {Object} comment
-	 * @param {function} onSuccess
-	 * @param {function} onError
+	 * @param {jQuery} shareButton
 	 */
-	shareComment: function (comment, onSuccess, onError) {
+	shareComment: function (comment, shareButton) {
 		$.ajax({
 			type: "post",
 			url: this.async_base_url + "&cmd=shareComment&comment_id=" + comment.id,
-			success: onSuccess,
-			error: onError
+			success: function () {
+				shareButton.remove();
+			},
+			error: function () {
+			}
 		});
 	},
 
@@ -148,7 +192,12 @@ il.CommentsUI.prototype = {
 			type: "post",
 			url: this.async_base_url + "&cmd=updateComment&comment_id=" + comment.id,
 			data: comment,
-			success: onSuccess,
+			success: function (comment) {
+				onSuccess(comment);
+
+				// TODO
+				//this.getCommentsUpdate();
+			},
 			error: onError
 		});
 	}
