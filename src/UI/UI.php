@@ -21,6 +21,10 @@ class UI {
 	 */
 	protected static $init = false;
 	/**
+	 * @var string
+	 */
+	protected $id = "";
+	/**
 	 * @var Comment[]
 	 */
 	protected $comments = [];
@@ -31,6 +35,18 @@ class UI {
 	 */
 	public function __construct() {
 
+	}
+
+
+	/**
+	 * @param string $id
+	 *
+	 * @return self
+	 */
+	public function withId(string $id): self {
+		$this->id = $id;
+
+		return $this;
 	}
 
 
@@ -72,6 +88,10 @@ class UI {
 		$this->initJs();
 
 		$tpl = new ilTemplate(__DIR__ . "/../../templates/commentsui.html", false, false);
+
+		$tpl->setVariable("ID", $this->id);
+
+		$tpl->setVariable("COMMENTS", json_encode($this->comments));
 
 		return self::output()->getHTML($tpl);
 	}
