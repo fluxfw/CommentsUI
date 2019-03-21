@@ -1,62 +1,109 @@
-$(document).ready(function () {
-	$("#comments-container").comments({
-		enableDeleting: true,
-		enableEditing: true,
+/**
+ * @param {Array} comments
+ * @param {string} container_id
+ *
+ * @constructor
+ */
+il.CommentsUI = function (comments = [], container_id = "") {
+	this.element = $(container_id);
 
-		forceResponsive: false,
-		enableAttachments: false,
-		enableDeletingCommentWithReplies: false,
-		enableHashtags: false,
-		enableNavigation: false,
-		enablePinging: false,
-		enableReplying: false,
-		enableUpvoting: false,
-		postCommentOnEnter: false,
-		readOnly: false,
+	this.comments = comments;
 
-		getComments: function (success, error) {
-			var commentsArray = [{
-				id: 1,
-				created: "2015-10-01",
-				content: "Lorem ipsum dolort sit amet",
-				fullname: "Simon Powell",
-				upvote_count: 2,
-				user_has_upvoted: false
-			}];
-			success(commentsArray);
-		},
+	this.init();
+};
 
-		postComment: function (commentJSON, success, error) {
-			$.ajax({
-				type: "post",
-				url: "/api/comments/",
-				data: commentJSON,
-				success: function (comment) {
-					success(comment)
-				},
-				error: error
-			});
-		},
+/**
+ * @type {il.CommentsUI[]}
+ *
+ * @private
+ */
+il.CommentsUI.INSTANCES = [];
 
-		putComment: function (commentJSON, success, error) {
-			$.ajax({
-				type: "put",
-				url: "/api/comments/" + commentJSON.id,
-				data: commentJSON,
-				success: function (comment) {
-					success(comment)
-				},
-				error: error
-			});
-		},
+/**
+ * @param {Array} comments
+ * @param {string} container_id
+ */
+il.CommentsUI.newInstance = function (comments = [], container_id = "") {
+	this.INSTANCES.push(new this(comments, container_id));
+};
 
-		deleteComment: function (commentJSON, success, error) {
-			$.ajax({
-				type: "delete",
-				url: "/api/comments/" + commentJSON.id,
-				success: success,
-				error: error
-			});
-		}
-	});
-});
+/**
+ * @type {Object}
+ */
+il.CommentsUI.prototype = {
+	constructor: il.CommentsUI,
+
+	/**
+	 * @type {Array}
+	 */
+	comments: [],
+
+	/**
+	 * @type {jQuery|null}
+	 */
+	element: null,
+
+	/**
+	 * @param {Object} commentJSON
+	 * @param {function} success
+	 * @param {function} error
+	 */
+	deleteComment: function (commentJSON, success, error) {
+
+	},
+
+	/**
+	 * @param {function} success
+	 * @param {function} error
+	 */
+	getComments: function (success, error) {
+		success(this.comments);
+	},
+
+	/**
+	 *
+	 */
+	init: function () {
+		this.element.comments({
+			enableDeleting: true,
+			enableEditing: true,
+
+			forceResponsive: false,
+			enableAttachments: false,
+			enableDeletingCommentWithReplies: false,
+			enableHashtags: false,
+			enableNavigation: false,
+			enablePinging: false,
+			enableReplying: false,
+			enableUpvoting: false,
+			postCommentOnEnter: false,
+			readOnly: false,
+
+			getComments: this.getComments.bind(this),
+
+			postComment: this.postComment.bind(this),
+
+			putComment: this.putComment.bind(this),
+
+			deleteComment: this.deleteComment.bind(this)
+		});
+	},
+
+	/**
+	 * @param {Object} commentJSON
+	 * @param {function} success
+	 * @param {function} error
+	 */
+	postComment: function (commentJSON, success, error) {
+
+	},
+
+	/**
+	 * @param {Object} commentJSON
+	 * @param {function} success
+	 * @param {function} error
+	 */
+	putComment: function (commentJSON, success, error) {
+
+	}
+};
