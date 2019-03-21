@@ -10,13 +10,13 @@ use srag\DIC\DICTrait;
 use stdClass;
 
 /**
- * Class Comment
+ * Class AbstractComment
  *
  * @package srag\CommentsUI\Comment
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class Comment extends ActiveRecord implements JsonSerializable {
+abstract class AbstractComment extends ActiveRecord implements JsonSerializable {
 
 	use DICTrait;
 	/**
@@ -128,7 +128,7 @@ abstract class Comment extends ActiveRecord implements JsonSerializable {
 
 
 	/**
-	 * Comment constructor
+	 * AbstractComment constructor
 	 *
 	 * @param int              $primary_key_value
 	 * @param arConnector|null $connector
@@ -343,7 +343,7 @@ abstract class Comment extends ActiveRecord implements JsonSerializable {
 	public function jsonSerialize(): stdClass {
 		return (object)[
 			"id" => $this->id,
-			"created" => date("Y-m-d", $this->updated_timestamp),
+			"created" => date("Y-m-d H:i:s", $this->updated_timestamp),
 			"content" => $this->comment,
 			"fullname" => self::dic()->objDataCache()->lookupTitle($this->created_user_id)
 		];
