@@ -15,28 +15,38 @@ final class Factory {
 
 	use DICTrait;
 	/**
-	 * @var self
+	 * @var self[]
 	 */
-	protected static $instance = null;
+	protected static $instances = [];
 
 
 	/**
+	 * @param string $comment_class
+	 *
 	 * @return self
 	 */
-	public static function getInstance(): self {
-		if (self::$instance === null) {
-			self::$instance = new self();
+	public static function getInstance(string $comment_class): self {
+		if (!isset(self::$instances[$comment_class])) {
+			self::$instances[$comment_class] = new self($comment_class);
 		}
 
-		return self::$instance;
+		return self::$instances[$comment_class];
 	}
 
 
 	/**
-	 * Factory constructor
+	 * @var string|Comment
 	 */
-	private function __construct() {
+	protected $comment_class;
 
+
+	/**
+	 * Factory constructor
+	 *
+	 * @param string $comment_class
+	 */
+	private function __construct(string $comment_class) {
+		$this->comment_class = $comment_class;
 	}
 
 
@@ -44,7 +54,7 @@ final class Factory {
 	 * @return Comment
 	 */
 	public function newInstance(): Comment {
-		$comment = new Comment();
+		$comment = new $this->comment_class();
 
 		return $comment;
 	}

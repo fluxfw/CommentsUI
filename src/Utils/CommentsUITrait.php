@@ -15,10 +15,12 @@ use srag\CommentsUI\UI\UI as CommentsUI;
 trait CommentsUITrait {
 
 	/**
+	 * @param string $comment_class
+	 *
 	 * @return CommentsRepository
 	 */
-	protected static function comments(): CommentsRepository {
-		return CommentsRepository::getInstance();
+	protected static function comments(string $comment_class): CommentsRepository {
+		return CommentsRepository::getInstance($comment_class);
 	}
 
 

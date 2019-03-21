@@ -17,6 +17,32 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
+#### ActiveRecord
+First you need to implement a `Comment` active record class with your own table name
+```php
+...
+use srag\CommentsUI\x\Comment\Comment as CommentActiveRecord;
+...
+class Comment extends CommentActiveRecord {
+
+	const TABLE_NAME = "x";
+}
+```
+
+Add an update step to your `dbupdate.php`
+```php
+<#x>
+<?php
+\srag\Plugins\x\Comment\Comment::updateDB();
+?>
+```
+
+and not forget to add an uninstaller step in your plugin class too
+```php
+self::dic()->database()->dropTable(Comment::TABLE_NAME, false);
+```
+
+#### Trait
 Your class in this you want to use CommentsUI needs to use the trait `CommentsUITrait`
 ```php
 ...
