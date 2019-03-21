@@ -53,16 +53,25 @@ final class Repository {
 
 	/**
 	 * @param AbstractComment $comment
+	 * @param bool            $time_limit
 	 *
 	 * @return bool
 	 */
-	public function canBeStored(AbstractComment $comment): bool {
+	public function canBeStored(AbstractComment $comment, bool $time_limit = true): bool {
 		if (empty($comment->getId())) {
 			return true;
 		}
 
-		if ($comment->getCreatedUserId() !== self::dic()->user()->getId()) {
+		if ($comment->isShared() || $comment->isDeleted()) {
 			return false;
+		}
+
+		if ($comment->getCreatedUserId() !== intval(self::dic()->user()->getId())) {
+			return false;
+		}
+
+		if (!$time_limit) {
+			return true;
 		}
 
 		$time = time();
@@ -77,7 +86,7 @@ final class Repository {
 	public function deleteComment(AbstractComment $comment)/*: void*/ {
 		$comment->setDeleted(true);
 
-		$comment->store();
+		$this->storeComment($comment, false);
 	}
 
 
@@ -156,8 +165,19 @@ final class Repository {
 	/**
 	 * @param AbstractComment $comment
 	 */
-	public function storeComment(AbstractComment $comment)/*: void*/ {
-		if (!$this->canBeStored($comment)) {
+	public function shareComment(AbstractComment $comment)/*: void*/ {
+		$comment->setIsShared(true);
+
+		$this->storeComment($comment, false);
+	}
+
+
+	/**
+	 * @param AbstractComment $comment
+	 * @param bool            $time_limit
+	 */
+	public function storeComment(AbstractComment $comment, bool $time_limit = true)/*: void*/ {
+		if (!$this->canBeStored($comment, $time_limit)) {
 			return;
 		}
 

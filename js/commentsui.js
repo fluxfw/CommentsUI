@@ -74,7 +74,7 @@ il.CommentsUI.prototype = {
 	 */
 	deleteComment: function (comment, onSuccess, onError) {
 		$.ajax({
-			type: "delete",
+			type: "post",
 			url: this.async_base_url + "&cmd=deleteComment&comment_id=" + comment.id,
 			success: onSuccess,
 			error: onError
@@ -129,9 +129,23 @@ il.CommentsUI.prototype = {
 	 * @param {function} onSuccess
 	 * @param {function} onError
 	 */
+	shareComment: function (comment, onSuccess, onError) {
+		$.ajax({
+			type: "post",
+			url: this.async_base_url + "&cmd=shareComment&comment_id=" + comment.id,
+			success: onSuccess,
+			error: onError
+		});
+	},
+
+	/**
+	 * @param {Object} comment
+	 * @param {function} onSuccess
+	 * @param {function} onError
+	 */
 	updateComment: function (comment, onSuccess, onError) {
 		$.ajax({
-			type: "put",
+			type: "post",
 			url: this.async_base_url + "&cmd=updateComment&comment_id=" + comment.id,
 			data: comment,
 			success: onSuccess,
