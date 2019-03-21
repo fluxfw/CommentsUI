@@ -61,6 +61,10 @@ final class Repository {
 			return true;
 		}
 
+		if ($comment->getCreatedUserId() !== self::dic()->user()->getId()) {
+			return false;
+		}
+
 		$time = time();
 
 		return (($time - $comment->getCreatedTimestamp()) <= (self::EDIT_LIMIT_MINUTES * 60));
