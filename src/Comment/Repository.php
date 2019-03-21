@@ -15,28 +15,38 @@ final class Repository {
 
 	use DICTrait;
 	/**
-	 * @var self
+	 * @var self[]
 	 */
-	protected static $instance = null;
+	protected static $instances = [];
 
 
 	/**
+	 * @param string $comment_class
+	 *
 	 * @return self
 	 */
-	public static function getInstance(): self {
-		if (self::$instance === null) {
-			self::$instance = new self();
+	public static function getInstance(string $comment_class): self {
+		if (!isset(self::$instances[$comment_class])) {
+			self::$instances[$comment_class] = new self($comment_class);
 		}
 
-		return self::$instance;
+		return self::$instances[$comment_class];
 	}
 
 
 	/**
-	 * Repository constructor
+	 * @var string|Comment
 	 */
-	private function __construct() {
+	protected $comment_class;
 
+
+	/**
+	 * Repository constructor
+	 *
+	 * @param string $comment_class
+	 */
+	private function __construct(string $comment_class) {
+		$this->comment_class = $comment_class;
 	}
 
 
@@ -52,7 +62,7 @@ final class Repository {
 	 * @return Factory
 	 */
 	public function factory(): Factory {
-		return Factory::getInstance();
+		return Factory::getInstance($this->comment_class);
 	}
 
 
@@ -66,7 +76,7 @@ final class Repository {
 		 * @var Comment|null $comment
 		 */
 
-		$comment = Comment::where([ "id" => $id ])->first();
+		$comment = $this->comment_class::where([ "id" => $id ])->first();
 
 		return $comment;
 	}
@@ -80,7 +90,7 @@ final class Repository {
 		 * @var Comment[] $comments
 		 */
 
-		$comments = Comment::orderBy("updated_timestamp", "desc")->get();
+		$comments = $this->comment_class::orderBy("updated_timestamp", "desc")->get();
 
 		return $comments;
 	}
@@ -97,7 +107,7 @@ final class Repository {
 		 * @var Comment[] $comments
 		 */
 
-		$comments = Comment::where([
+		$comments = $this->comment_class::where([
 			"report_obj_id" => $report_obj_id,
 			"report_user_id" => $report_user_id
 		])->orderBy("updated_timestamp", "desc")->get();
@@ -126,7 +136,7 @@ final class Repository {
 			$where["report_obj_id"] = $report_obj_id;
 		}
 
-		$comments = Comment::where($where)->orderBy("updated_timestamp", "desc")->get();
+		$comments = $this->comment_class::where($where)->orderBy("updated_timestamp", "desc")->get();
 
 		return $comments;
 	}
