@@ -85,7 +85,7 @@ abstract class AbstractCtrl {
 
 		$comment->setComment(filter_input(INPUT_POST, "content"));
 
-		self::comments(static::COMMENTS_CLASS_NAME)->storeInstance($comment);
+		self::comments(static::COMMENTS_CLASS_NAME)->storeComment($comment);
 
 		self::output()->outputJSON($comment);
 	}
@@ -101,7 +101,7 @@ abstract class AbstractCtrl {
 
 		$comment->setComment(filter_input(INPUT_POST, "content"));
 
-		self::comments(static::COMMENTS_CLASS_NAME)->storeInstance($comment);
+		self::comments(static::COMMENTS_CLASS_NAME)->storeComment($comment);
 	}
 
 

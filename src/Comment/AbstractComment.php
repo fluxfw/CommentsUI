@@ -6,6 +6,7 @@ use ActiveRecord;
 use arConnector;
 use ilDateTime;
 use JsonSerializable;
+use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 use stdClass;
 
@@ -19,6 +20,7 @@ use stdClass;
 abstract class AbstractComment extends ActiveRecord implements JsonSerializable {
 
 	use DICTrait;
+	use CommentsUITrait;
 	/**
 	 * @var string
 	 *
@@ -125,6 +127,15 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 	 * @con_is_notnull  true
 	 */
 	protected $is_shared = false;
+	/**
+	 * @var bool
+	 *
+	 * @con_has_field   true
+	 * @con_fieldtype   integer
+	 * @con_length      1
+	 * @con_is_notnull  true
+	 */
+	protected $deleted = false;
 
 
 	/**
@@ -151,6 +162,7 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 
 		switch ($field_name) {
 			case "is_shared":
+			case "deleted":
 				return ($field_value ? 1 : 0);
 
 			case "created_timestamp":
@@ -181,6 +193,7 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 				break;
 
 			case "is_shared":
+			case "deleted":
 				return boolval($field_value);
 
 			case "created_timestamp":
@@ -338,14 +351,32 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 
 
 	/**
+	 * @return bool
+	 */
+	public function isDeleted(): bool {
+		return $this->deleted;
+	}
+
+
+	/**
+	 * @param bool $deleted
+	 */
+	public function setDeleted(bool $deleted)/*: void*/ {
+		$this->deleted = $deleted;
+	}
+
+
+	/**
 	 * @return stdClass
 	 */
 	public function jsonSerialize(): stdClass {
 		return (object)[
 			"id" => $this->id,
-			"created" => date("Y-m-d H:i:s", $this->updated_timestamp),
+			"created" => date("Y-m-d H:i:s", $this->created_timestamp),
+			"modified" => date("Y-m-d H:i:s", $this->updated_timestamp),
 			"content" => $this->comment,
-			"fullname" => self::dic()->objDataCache()->lookupTitle($this->created_user_id)
+			"fullname" => self::dic()->objDataCache()->lookupTitle($this->created_user_id),
+			"createdByCurrentUser" => ($this->created_user_id === self::dic()->user()->getId() && self::comments(static::class)->canBeStored($this))
 		];
 	}
 }
