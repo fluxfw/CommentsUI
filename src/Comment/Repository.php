@@ -115,7 +115,7 @@ final class Repository {
 		$comments = array_values($this->comment_class::where([
 			"deleted" => false,
 			"report_obj_id" => $report_obj_id,
-			"report_user_id" => $report_user_id,
+			"report_user_id" => $report_user_id
 		])->orderBy("updated_timestamp", "desc")->get());
 
 		return $comments;
