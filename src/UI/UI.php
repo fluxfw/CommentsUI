@@ -28,10 +28,6 @@ class UI {
 	 * @var AbstractCtrl
 	 */
 	protected $ctrl_class;
-	/**
-	 * @var bool
-	 */
-	protected $readonly = false;
 
 
 	/**
@@ -67,18 +63,6 @@ class UI {
 
 
 	/**
-	 * @param bool $readonly
-	 *
-	 * @return self
-	 */
-	public function withReadonly(bool $readonly): self {
-		$this->readonly = $readonly;
-
-		return $this;
-	}
-
-
-	/**
 	 *
 	 */
 	private function initJs()/*: void*/ {
@@ -107,9 +91,7 @@ class UI {
 
 		$tpl->setVariable("ID", $this->id);
 
-		$tpl->setVariable("COMMENTS", json_encode($this->ctrl_class->getComments()));
-
-		$tpl->setVariable("READONLY", json_encode($this->readonly));
+		$tpl->setVariable("READONLY", json_encode($this->ctrl_class->getIsReadOnly()));
 
 		$tpl->setVariable("ASYNC_BASE_URL", json_encode($this->ctrl_class->getAsyncBaseUrl()));
 

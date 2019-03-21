@@ -1,15 +1,12 @@
 /**
  * @param {string} container_id
- * @param {Array} comments
  * @param {bool} readonly
  * @param {string} async_base_url
  *
  * @constructor
  */
-il.CommentsUI = function (container_id = "", comments = [], readonly = false, async_base_url = "") {
+il.CommentsUI = function (container_id = "", readonly = false, async_base_url = "") {
 	this.element = $("#" + container_id);
-
-	this.comments = comments;
 
 	this.readonly = readonly;
 
@@ -27,12 +24,11 @@ il.CommentsUI.INSTANCES = [];
 
 /**
  * @param {string} container_id
- * @param {Array} comments
  * @param {bool} readonly
  * @param {string} async_base_url
  */
-il.CommentsUI.newInstance = function (container_id = "", comments = [], readonly = false, async_base_url = "") {
-	this.INSTANCES.push(new this(container_id, comments, readonly, async_base_url));
+il.CommentsUI.newInstance = function (container_id = "", readonly = false, async_base_url = "") {
+	this.INSTANCES.push(new this(container_id, readonly, async_base_url));
 };
 
 /**
@@ -45,11 +41,6 @@ il.CommentsUI.prototype = {
 	 * @type {string}
 	 */
 	async_base_url: "",
-
-	/**
-	 * @type {Array}
-	 */
-	comments: [],
 
 	/**
 	 * @type {jQuery|null}
@@ -95,7 +86,12 @@ il.CommentsUI.prototype = {
 	 * @param {function} onError
 	 */
 	getComments: function (onSuccess, onError) {
-		onSuccess(this.comments);
+		$.ajax({
+			type: "get",
+			url: this.async_base_url + "&cmd=getComments",
+			success: onSuccess,
+			error: onError
+		});
 	},
 
 	/**
