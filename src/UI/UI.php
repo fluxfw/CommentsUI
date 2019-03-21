@@ -3,7 +3,7 @@
 namespace srag\CommentsUI\UI;
 
 use ilTemplate;
-use srag\CommentsUI\Comment\Comment;
+use srag\CommentsUI\Ctrl\AbstractCtrl;
 use srag\DIC\DICTrait;
 
 /**
@@ -25,17 +25,13 @@ class UI {
 	 */
 	protected $id = "";
 	/**
-	 * @var Comment[]
+	 * @var AbstractCtrl
 	 */
-	protected $comments = [];
+	protected $ctrl_class;
 	/**
 	 * @var bool
 	 */
 	protected $readonly = false;
-	/**
-	 * @var string
-	 */
-	protected $async_base_url = "";
 
 
 	/**
@@ -59,12 +55,12 @@ class UI {
 
 
 	/**
-	 * @param Comment[] $comments
+	 * @param AbstractCtrl $ctrl_class
 	 *
 	 * @return self
 	 */
-	public function withComments(array $comments): self {
-		$this->comments = $comments;
+	public function withCtrlClass(AbstractCtrl $ctrl_class): self {
+		$this->ctrl_class = $ctrl_class;
 
 		return $this;
 	}
@@ -77,23 +73,6 @@ class UI {
 	 */
 	public function withReadonly(bool $readonly): self {
 		$this->readonly = $readonly;
-
-		return $this;
-	}
-
-
-	/**
-	 * @param string $async_class
-	 * @param int    $report_obj_id
-	 * @param int    $report_user_id
-	 *
-	 * @return self
-	 */
-	public function withAsyncClass(string $async_class, int $report_obj_id, int $report_user_id): self {
-		self::dic()->ctrl()->setParameterByClass($async_class, Ctrl::GET_PARAM_REPORT_OBJ_ID, $report_obj_id);
-		self::dic()->ctrl()->setParameterByClass($async_class, Ctrl::GET_PARAM_REPORT_USER_ID, $report_user_id);
-
-		$this->async_base_url = self::dic()->ctrl()->getLinkTargetByClass($async_class);
 
 		return $this;
 	}
@@ -128,11 +107,11 @@ class UI {
 
 		$tpl->setVariable("ID", $this->id);
 
-		$tpl->setVariable("COMMENTS", json_encode($this->comments));
+		$tpl->setVariable("COMMENTS", json_encode($this->ctrl_class->getComments()));
 
 		$tpl->setVariable("READONLY", json_encode($this->readonly));
 
-		$tpl->setVariable("ASYNC_BASE_URL", json_encode($this->async_base_url));
+		$tpl->setVariable("ASYNC_BASE_URL", json_encode($this->ctrl_class->getAsyncBaseUrl()));
 
 		return self::output()->getHTML($tpl);
 	}

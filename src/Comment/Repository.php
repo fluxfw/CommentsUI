@@ -35,7 +35,7 @@ final class Repository {
 
 
 	/**
-	 * @var string|Comment
+	 * @var string|AbstractComment
 	 */
 	protected $comment_class;
 
@@ -51,9 +51,9 @@ final class Repository {
 
 
 	/**
-	 * @param Comment $comment
+	 * @param AbstractComment $comment
 	 */
-	public function deleteComment(Comment $comment)/*: void*/ {
+	public function deleteComment(AbstractComment $comment)/*: void*/ {
 		$comment->delete();
 	}
 
@@ -69,11 +69,11 @@ final class Repository {
 	/**
 	 * @param int $id
 	 *
-	 * @return Comment|null
+	 * @return AbstractComment|null
 	 */
 	public function getCommentById(int $id)/*: ?Comment*/ {
 		/**
-		 * @var Comment|null $comment
+		 * @var AbstractComment|null $comment
 		 */
 
 		$comment = $this->comment_class::where([ "id" => $id ])->first();
@@ -83,11 +83,11 @@ final class Repository {
 
 
 	/**
-	 * @return Comment[]
+	 * @return AbstractComment[]
 	 */
 	public function getComments(): array {
 		/**
-		 * @var Comment[] $comments
+		 * @var AbstractComment[] $comments
 		 */
 
 		$comments = $this->comment_class::orderBy("updated_timestamp", "desc")->get();
@@ -100,11 +100,11 @@ final class Repository {
 	 * @param int $report_obj_id
 	 * @param int $report_user_id
 	 *
-	 * @return Comment[]
+	 * @return AbstractComment[]
 	 */
 	public function getCommentsForReport(int $report_obj_id, int $report_user_id): array {
 		/**
-		 * @var Comment[] $comments
+		 * @var AbstractComment[] $comments
 		 */
 
 		$comments = array_values($this->comment_class::where([
@@ -119,12 +119,12 @@ final class Repository {
 	/**
 	 * @param int|null $report_obj_id
 	 *
-	 * @return Comment[]
+	 * @return AbstractComment[]
 	 */
 	public function getCommentsForCurrentUser(/*?int*/
 		$report_obj_id = null): array {
 		/**
-		 * @var Comment[] $comments
+		 * @var AbstractComment[] $comments
 		 */
 
 		$where = [
@@ -143,9 +143,9 @@ final class Repository {
 
 
 	/**
-	 * @param Comment $comment
+	 * @param AbstractComment $comment
 	 */
-	public function storeInstance(Comment $comment)/*: void*/ {
+	public function storeInstance(AbstractComment $comment)/*: void*/ {
 		$time = time();
 
 		if (empty($comment->getId())) {

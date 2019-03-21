@@ -35,7 +35,7 @@ final class Factory {
 
 
 	/**
-	 * @var string|Comment
+	 * @var string|AbstractComment
 	 */
 	protected $comment_class;
 
@@ -51,9 +51,9 @@ final class Factory {
 
 
 	/**
-	 * @return Comment
+	 * @return AbstractComment
 	 */
-	public function newInstance(): Comment {
+	public function newInstance(): AbstractComment {
 		$comment = new $this->comment_class();
 
 		return $comment;
