@@ -107,10 +107,10 @@ final class Repository {
 		 * @var Comment[] $comments
 		 */
 
-		$comments = $this->comment_class::where([
+		$comments = array_values($this->comment_class::where([
 			"report_obj_id" => $report_obj_id,
 			"report_user_id" => $report_user_id
-		])->orderBy("updated_timestamp", "desc")->get();
+		])->orderBy("updated_timestamp", "desc")->get());
 
 		return $comments;
 	}
@@ -136,7 +136,7 @@ final class Repository {
 			$where["report_obj_id"] = $report_obj_id;
 		}
 
-		$comments = $this->comment_class::where($where)->orderBy("updated_timestamp", "desc")->get();
+		$comments = array_values($this->comment_class::where($where)->orderBy("updated_timestamp", "desc")->get());
 
 		return $comments;
 	}

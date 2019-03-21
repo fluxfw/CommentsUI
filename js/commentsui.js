@@ -1,13 +1,19 @@
 /**
- * @param {Array} comments
  * @param {string} container_id
+ * @param {Array} comments
+ * @param {bool} readonly
+ * @param {string} async_base_url
  *
  * @constructor
  */
-il.CommentsUI = function (comments = [], container_id = "") {
-	this.element = $(container_id);
+il.CommentsUI = function (container_id = "", comments = [], readonly = false, async_base_url = "") {
+	this.element = $("#" + container_id);
 
 	this.comments = comments;
+
+	this.readonly = readonly;
+
+	this.async_base_url = async_base_url;
 
 	this.init();
 };
@@ -20,11 +26,13 @@ il.CommentsUI = function (comments = [], container_id = "") {
 il.CommentsUI.INSTANCES = [];
 
 /**
- * @param {Array} comments
  * @param {string} container_id
+ * @param {Array} comments
+ * @param {bool} readonly
+ * @param {string} async_base_url
  */
-il.CommentsUI.newInstance = function (comments = [], container_id = "") {
-	this.INSTANCES.push(new this(comments, container_id));
+il.CommentsUI.newInstance = function (container_id = "", comments = [], readonly = false, async_base_url = "") {
+	this.INSTANCES.push(new this(container_id, comments, readonly, async_base_url));
 };
 
 /**
@@ -32,6 +40,11 @@ il.CommentsUI.newInstance = function (comments = [], container_id = "") {
  */
 il.CommentsUI.prototype = {
 	constructor: il.CommentsUI,
+
+	/**
+	 * @type {string}
+	 */
+	async_base_url: "",
 
 	/**
 	 * @type {Array}
@@ -44,20 +57,45 @@ il.CommentsUI.prototype = {
 	element: null,
 
 	/**
-	 * @param {Object} commentJSON
-	 * @param {function} success
-	 * @param {function} error
+	 * @type {boolean}
 	 */
-	deleteComment: function (commentJSON, success, error) {
+	readonly: false,
 
+	/**
+	 * @param {Object} comment
+	 * @param {function} onSuccess
+	 * @param {function} onError
+	 */
+	createComment: function (comment, onSuccess, onError) {
+		$.ajax({
+			type: "post",
+			url: this.async_base_url + "&cmd=createComment",
+			data: comment,
+			success: onSuccess,
+			error: onError
+		});
 	},
 
 	/**
-	 * @param {function} success
-	 * @param {function} error
+	 * @param {Object} comment
+	 * @param {function} onSuccess
+	 * @param {function} onError
 	 */
-	getComments: function (success, error) {
-		success(this.comments);
+	deleteComment: function (comment, onSuccess, onError) {
+		$.ajax({
+			type: "delete",
+			url: this.async_base_url + "&cmd=deleteComment&comment_id=" + comment.id,
+			success: onSuccess,
+			error: onError
+		});
+	},
+
+	/**
+	 * @param {function} onSuccess
+	 * @param {function} onError
+	 */
+	getComments: function (onSuccess, onError) {
+		onSuccess(this.comments);
 	},
 
 	/**
@@ -65,8 +103,8 @@ il.CommentsUI.prototype = {
 	 */
 	init: function () {
 		this.element.comments({
-			enableDeleting: true,
-			enableEditing: true,
+			enableDeleting: !this.readonly,
+			enableEditing: !this.readonly,
 
 			forceResponsive: false,
 			enableAttachments: false,
@@ -77,33 +115,27 @@ il.CommentsUI.prototype = {
 			enableReplying: false,
 			enableUpvoting: false,
 			postCommentOnEnter: false,
-			readOnly: false,
+			readOnly: this.readonly,
 
 			getComments: this.getComments.bind(this),
-
-			postComment: this.postComment.bind(this),
-
-			putComment: this.putComment.bind(this),
-
+			postComment: this.createComment.bind(this),
+			putComment: this.updateComment.bind(this),
 			deleteComment: this.deleteComment.bind(this)
 		});
 	},
 
 	/**
-	 * @param {Object} commentJSON
-	 * @param {function} success
-	 * @param {function} error
+	 * @param {Object} comment
+	 * @param {function} onSuccess
+	 * @param {function} onError
 	 */
-	postComment: function (commentJSON, success, error) {
-
-	},
-
-	/**
-	 * @param {Object} commentJSON
-	 * @param {function} success
-	 * @param {function} error
-	 */
-	putComment: function (commentJSON, success, error) {
-
+	updateComment: function (comment, onSuccess, onError) {
+		$.ajax({
+			type: "put",
+			url: this.async_base_url + "&cmd=updateComment&comment_id=" + comment.id,
+			data: comment,
+			success: onSuccess,
+			error: onError
+		});
 	}
 };

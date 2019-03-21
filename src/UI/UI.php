@@ -28,6 +28,14 @@ class UI {
 	 * @var Comment[]
 	 */
 	protected $comments = [];
+	/**
+	 * @var bool
+	 */
+	protected $readonly = false;
+	/**
+	 * @var string
+	 */
+	protected $async_base_url = "";
 
 
 	/**
@@ -63,6 +71,35 @@ class UI {
 
 
 	/**
+	 * @param bool $readonly
+	 *
+	 * @return self
+	 */
+	public function withReadonly(bool $readonly): self {
+		$this->readonly = $readonly;
+
+		return $this;
+	}
+
+
+	/**
+	 * @param string $async_class
+	 * @param int    $report_obj_id
+	 * @param int    $report_user_id
+	 *
+	 * @return self
+	 */
+	public function withAsyncClass(string $async_class, int $report_obj_id, int $report_user_id): self {
+		self::dic()->ctrl()->setParameterByClass($async_class, Ctrl::GET_PARAM_REPORT_OBJ_ID, $report_obj_id);
+		self::dic()->ctrl()->setParameterByClass($async_class, Ctrl::GET_PARAM_REPORT_USER_ID, $report_user_id);
+
+		$this->async_base_url = self::dic()->ctrl()->getLinkTargetByClass($async_class);
+
+		return $this;
+	}
+
+
+	/**
 	 *
 	 */
 	private function initJs()/*: void*/ {
@@ -92,6 +129,10 @@ class UI {
 		$tpl->setVariable("ID", $this->id);
 
 		$tpl->setVariable("COMMENTS", json_encode($this->comments));
+
+		$tpl->setVariable("READONLY", json_encode($this->readonly));
+
+		$tpl->setVariable("ASYNC_BASE_URL", json_encode($this->async_base_url));
 
 		return self::output()->getHTML($tpl);
 	}
