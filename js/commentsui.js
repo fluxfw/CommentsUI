@@ -98,6 +98,10 @@ il.CommentsUI.prototype = {
 	 *
 	 */
 	init: function () {
+		if (this.readonly) {
+			this.element.addClass("readonly");
+		}
+
 		this.element.comments({
 			enableDeleting: !this.readonly,
 			enableEditing: !this.readonly,
