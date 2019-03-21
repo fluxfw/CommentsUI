@@ -17,7 +17,7 @@ abstract class AbstractCtrl {
 	use DICTrait;
 	use CommentsUITrait;
 	const CMD_CREATE_COMMENT = "createComment";
-	const CMD_GET_COMMENTS = "getComment";
+	const CMD_GET_COMMENTS = "getComments";
 	const CMD_UPDATE_COMMENT = "updateComment";
 	const CMD_DELETE_COMMENT = "deleteComment";
 	const GET_PARAM_COMMENT_ID = "comment_id";
@@ -129,8 +129,14 @@ abstract class AbstractCtrl {
 	 * @return string
 	 */
 	public function getAsyncBaseUrl(): string {
-		return self::dic()->ctrl()->getLinkTarget($this, "", "", true, false);
+		return self::dic()->ctrl()->getLinkTargetByClass($this->getAsyncClass(), "", "", true, false);
 	}
+
+
+	/**
+	 * @return array
+	 */
+	public abstract function getAsyncClass(): array;
 
 
 	/**
