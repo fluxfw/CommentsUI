@@ -17,6 +17,7 @@ abstract class AbstractCtrl {
 	use DICTrait;
 	use CommentsUITrait;
 	const CMD_CREATE_COMMENT = "createComment";
+	const CMD_GET_COMMENTS = "getComment";
 	const CMD_UPDATE_COMMENT = "updateComment";
 	const CMD_DELETE_COMMENT = "deleteComment";
 	const GET_PARAM_COMMENT_ID = "comment_id";
@@ -46,6 +47,7 @@ abstract class AbstractCtrl {
 
 		switch ($cmd) {
 			case self::CMD_CREATE_COMMENT:
+			case self::CMD_GET_COMMENTS:
 			case self::CMD_UPDATE_COMMENT:
 			case self::CMD_DELETE_COMMENT:
 				$this->{$cmd}();
@@ -54,6 +56,17 @@ abstract class AbstractCtrl {
 			default:
 				break;
 		}
+	}
+
+
+	/**
+	 *
+	 */
+	public function getComments()/*: void*/ {
+		$report_obj_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_OBJ_ID));
+		$report_user_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_USER_ID));
+
+		self::output()->outputJSON($this->getCommentsArray($report_obj_id, $report_user_id));
 	}
 
 
@@ -105,18 +118,26 @@ abstract class AbstractCtrl {
 
 
 	/**
+	 * @return bool
+	 */
+	public function getIsReadOnly(): bool {
+		return false;
+	}
+
+
+	/**
 	 * @return string
 	 */
 	public function getAsyncBaseUrl(): string {
-		self::dic()->ctrl()->setParameter($this, self::GET_PARAM_REPORT_OBJ_ID, $report_obj_id);
-		self::dic()->ctrl()->setParameter($this, self::GET_PARAM_REPORT_USER_ID, $report_user_id);
-
 		return self::dic()->ctrl()->getLinkTarget($this, "", "", true, false);
 	}
 
 
 	/**
+	 * @param int $report_obj_id
+	 * @param int $report_user_id
+	 *
 	 * @return array
 	 */
-	public abstract function getComments(): array;
+	public abstract function getCommentsArray(int $report_obj_id, int $report_user_id): array;
 }
