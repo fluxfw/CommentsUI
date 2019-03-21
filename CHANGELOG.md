@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.3.0]
+- Implementation
+
 ## [0.2.1]
 - First js implementation
 
