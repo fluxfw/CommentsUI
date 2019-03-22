@@ -17,13 +17,13 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
-#### ActiveRecord
+#### Comment ActiveRecord
 First you need to implement a `Comment` active record class with your own table name
 ```php
 ...
-use srag\CommentsUI\x\Comment\Comment as CommentActiveRecord;
+use srag\CommentsUI\x\Comment\AbstractComment;
 ...
-class Comment extends CommentActiveRecord {
+class Comment extends AbstractComment {
 
 	const TABLE_NAME = "x";
 }
@@ -31,6 +31,7 @@ class Comment extends CommentActiveRecord {
 
 Add an update step to your `dbupdate.php`
 ```php
+...
 <#x>
 <?php
 \srag\Plugins\x\Comment\Comment::updateDB();
@@ -39,10 +40,38 @@ Add an update step to your `dbupdate.php`
 
 and not forget to add an uninstaller step in your plugin class too
 ```php
+...
+use srag\Plugins\x\Comment\Comment;
+...
 self::dic()->database()->dropTable(Comment::TABLE_NAME, false);
+...
 ```
 
-#### Trait
+#### Async ctrl class
+```php
+...
+use srag\CommentsUI\x\Ctrl\AbstractCtrl;
+use srag\Plugins\x\Comment\Comment;
+...
+/**
+ * ...
+ *
+ * @ilCtrl_isCalledBy srag\Plugins\x\Comment\Ctrl\Ctrl: ilUIPluginRouterGUI
+ */
+class Ctrl extends AbstractCtrl {
+	...
+	const COMMENTS_CLASS_NAME = Comment::class;
+	...
+	/**
+	 * @inheritdoc
+	 */
+	public function getCommentsArray(int $report_obj_id, int $report_user_id): array {
+		...
+	}
+}
+```
+
+#### Trait usage
 Your class in this you want to use CommentsUI needs to use the trait `CommentsUITrait`
 ```php
 ...
@@ -52,6 +81,14 @@ class x {
 ...
 use CommentsUITrait;
 ...
+```
+
+#### UI usage
+```php
+...
+use srag\Plugins\x\Comment\Ctrl\Ctrl;
+...
+self::output()->getHTML(self::commentsUI()->withCtrlClass(new Ctrl()));
 ```
 
 ### Dependencies
