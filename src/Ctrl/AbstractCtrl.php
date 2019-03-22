@@ -130,6 +130,8 @@ abstract class AbstractCtrl {
 		$comment = self::comments(static::COMMENTS_CLASS_NAME)->getCommentById($comment_id);
 
 		self::comments(static::COMMENTS_CLASS_NAME)->shareComment($comment);
+
+		self::output()->outputJSON($comment);
 	}
 
 
