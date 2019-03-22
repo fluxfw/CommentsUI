@@ -377,8 +377,8 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 			"content" => $this->comment,
 			"fullname" => self::dic()->objDataCache()->lookupTitle($this->created_user_id),
 			"created_by_current_user" => self::comments(static::class)->canBeStored($this),
-			"deletable" => self::comments(static::class)->canBeStored($this, false),
-			"is_shared" => $this->is_shared
+			"deletable" => self::comments(static::class)->canBeDeleted($this),
+			"shareable" => self::comments(static::class)->canBeShared($this),
 		];
 	}
 }

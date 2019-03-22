@@ -53,26 +53,64 @@ final class Repository {
 
 	/**
 	 * @param AbstractComment $comment
-	 * @param bool            $time_limit
 	 *
 	 * @return bool
 	 */
-	public function canBeStored(AbstractComment $comment, bool $time_limit = true): bool {
+	public function canBeDeleted(AbstractComment $comment): bool {
 		if (empty($comment->getId())) {
-			return true;
+			return false;
 		}
 
-		// TODO
-		/*if ($comment->isShared() || $comment->isDeleted()) {
+		if ($comment->isShared() || $comment->isDeleted()) {
 			return false;
-		}*/
+		}
 
 		if ($comment->getCreatedUserId() !== intval(self::dic()->user()->getId())) {
 			return false;
 		}
 
-		if (!$time_limit) {
+		return true;
+	}
+
+
+	/**
+	 * @param AbstractComment $comment
+	 *
+	 * @return bool
+	 */
+	public function canBeShared(AbstractComment $comment): bool {
+		if (empty($comment->getId())) {
+			return false;
+		}
+
+		if ($comment->isShared() || $comment->isDeleted()) {
+			return false;
+		}
+
+		if ($comment->getCreatedUserId() !== intval(self::dic()->user()->getId())) {
+			return false;
+		}
+
+		return true;
+	}
+
+
+	/**
+	 * @param AbstractComment $comment
+	 *
+	 * @return bool
+	 */
+	public function canBeStored(AbstractComment $comment): bool {
+		if (empty($comment->getId())) {
 			return true;
+		}
+
+		if ($comment->isShared() || $comment->isDeleted()) {
+			return false;
+		}
+
+		if ($comment->getCreatedUserId() !== intval(self::dic()->user()->getId())) {
+			return false;
 		}
 
 		$time = time();
@@ -85,9 +123,13 @@ final class Repository {
 	 * @param AbstractComment $comment
 	 */
 	public function deleteComment(AbstractComment $comment)/*: void*/ {
+		if (!$this->canBeDeleted($comment)) {
+			return;
+		}
+
 		$comment->setDeleted(true);
 
-		$this->storeComment($comment, false);
+		$comment->store();
 	}
 
 
@@ -167,18 +209,21 @@ final class Repository {
 	 * @param AbstractComment $comment
 	 */
 	public function shareComment(AbstractComment $comment)/*: void*/ {
+		if (!$this->canBeShared($comment)) {
+			return;
+		}
+
 		$comment->setIsShared(true);
 
-		$this->storeComment($comment, false);
+		$comment->store();
 	}
 
 
 	/**
 	 * @param AbstractComment $comment
-	 * @param bool            $time_limit
 	 */
-	public function storeComment(AbstractComment $comment, bool $time_limit = true)/*: void*/ {
-		if (!$this->canBeStored($comment, $time_limit)) {
+	public function storeComment(AbstractComment $comment)/*: void*/ {
+		if (!$this->canBeStored($comment)) {
 			return;
 		}
 

@@ -65,8 +65,7 @@ il.CommentsUI.prototype = {
 			success: function (comment) {
 				onSuccess(comment);
 
-				// TODO
-				//this.getCommentsUpdate();
+				this.getCommentsUpdate([comment]);
 			},
 			error: onError
 		});
@@ -125,7 +124,7 @@ il.CommentsUI.prototype = {
 				}
 
 				// Share
-				if (!comment.is_shared) {
+				if (comment.shareable) {
 					var shareButton = $('<button/>', {
 						class: "action share",
 						text: "Share",
@@ -195,8 +194,7 @@ il.CommentsUI.prototype = {
 			success: function (comment) {
 				onSuccess(comment);
 
-				// TODO
-				//this.getCommentsUpdate();
+				this.getCommentsUpdate([comment]);
 			},
 			error: onError
 		});
