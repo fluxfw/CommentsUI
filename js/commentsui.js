@@ -66,7 +66,7 @@ il.CommentsUI.prototype = {
 				onSuccess(comment);
 
 				this.getCommentsUpdate([comment]);
-			},
+			}.bind(this),
 			error: onError
 		});
 	},
@@ -195,7 +195,7 @@ il.CommentsUI.prototype = {
 				onSuccess(comment);
 
 				this.getCommentsUpdate([comment]);
-			},
+			}.bind(this),
 			error: onError
 		});
 	}
