@@ -169,7 +169,7 @@ il.CommentsUI.prototype = {
 			putComment: this.updateComment.bind(this),
 
 			timeFormatter: function (time) {
-				return new Date(time).toLocaleTimeString();
+				return new Date(time).toLocaleString();
 			},
 		};
 
