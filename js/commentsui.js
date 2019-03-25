@@ -48,6 +48,11 @@ il.CommentsUI.prototype = {
 	element: null,
 
 	/**
+	 * @type {Object}
+	 */
+	LANGUAGES: {},
+
+	/**
 	 * @type {boolean}
 	 */
 	readonly: false,
@@ -117,7 +122,7 @@ il.CommentsUI.prototype = {
 				if (comment.deletable) {
 					var deleteButton = $('<button/>', {
 						class: "action delete",
-						text: "Delete",
+						text: this.txt("deleteText"),
 					});
 					deleteButton.on("click", this.deleteComment.bind(this, comment, commentElement));
 					actions.append(deleteButton);
@@ -127,7 +132,7 @@ il.CommentsUI.prototype = {
 				if (comment.shareable) {
 					var shareButton = $('<button/>', {
 						class: "action share",
-						text: "Share",
+						text: this.txt("shareText"),
 					});
 					shareButton.on("click", this.shareComment.bind(this, comment, shareButton, deleteButton));
 					actions.append(shareButton);
@@ -144,7 +149,7 @@ il.CommentsUI.prototype = {
 			this.element.addClass("readonly");
 		}
 
-		this.element.comments({
+		var options = {
 			enableEditing: !this.readonly,
 
 			forceResponsive: false,
@@ -161,8 +166,17 @@ il.CommentsUI.prototype = {
 
 			getComments: this.getComments.bind(this),
 			postComment: this.createComment.bind(this),
-			putComment: this.updateComment.bind(this)
+			putComment: this.updateComment.bind(this),
+		};
+
+		Object.keys(il.CommentsUI.LANGUAGES).forEach(function (key) {
+			if (!options[key]) {
+				options[key] = il.CommentsUI.LANGUAGES[key];
+			}
 		});
+
+
+		this.element.comments(options);
 	},
 
 	/**
@@ -185,6 +199,15 @@ il.CommentsUI.prototype = {
 			error: function () {
 			}
 		});
+	},
+
+	/**
+	 * @param {string} key
+	 *
+	 * @returns {string}
+	 */
+	txt: function (key) {
+		return il.CommentsUI.LANGUAGES[key];
 	},
 
 	/**
