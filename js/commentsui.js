@@ -167,6 +167,10 @@ il.CommentsUI.prototype = {
 			getComments: this.getComments.bind(this),
 			postComment: this.createComment.bind(this),
 			putComment: this.updateComment.bind(this),
+
+			timeFormatter: function (time) {
+				return new Date(time).toLocaleTimeString();
+			},
 		};
 
 		Object.keys(il.CommentsUI.LANGUAGES).forEach(function (key) {
