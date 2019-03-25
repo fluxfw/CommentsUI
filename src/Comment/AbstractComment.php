@@ -190,7 +190,6 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 			case "created_user_id":
 			case "updated_user_id":
 				return intval($field_value);
-				break;
 
 			case "is_shared":
 			case "deleted":

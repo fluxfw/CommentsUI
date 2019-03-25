@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.4.3]
+- Implementation
+
 ## [0.4.2]
 - Implementation
 
