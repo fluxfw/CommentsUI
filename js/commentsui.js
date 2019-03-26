@@ -155,7 +155,7 @@ il.CommentsUI.prototype = {
 		}
 
 		var options = {
-			profilePictureURL: "https://viima-app.s3.amazonaws.com/media/public/defaults/user-icon.png",
+			profilePictureURL: this.profileImageUrl,
 
 			enableEditing: !this.readonly,
 
