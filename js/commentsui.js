@@ -55,7 +55,7 @@ il.CommentsUI.prototype = {
 	/**
 	 * @type {string}
 	 */
-	profileImageUrl:"",
+	profileImageUrl: "",
 
 	/**
 	 * @type {boolean}
@@ -155,7 +155,7 @@ il.CommentsUI.prototype = {
 		}
 
 		var options = {
-			profilePictureURL: this.profileImageUrl,
+			profilePictureURL: il.CommentsUI.profileImageUrl,
 
 			enableEditing: !this.readonly,
 
