@@ -50,7 +50,12 @@ il.CommentsUI.prototype = {
 	/**
 	 * @type {Object}
 	 */
-	LANGUAGES: {},
+	languages: {},
+
+	/**
+	 * @type {string}
+	 */
+	profileImageUrl:"",
 
 	/**
 	 * @type {boolean}
@@ -150,6 +155,8 @@ il.CommentsUI.prototype = {
 		}
 
 		var options = {
+			profilePictureURL: this.profileImageUrl,
+
 			enableEditing: !this.readonly,
 
 			forceResponsive: false,
@@ -174,7 +181,7 @@ il.CommentsUI.prototype = {
 			},
 		};
 
-		Object.keys(il.CommentsUI.LANGUAGES).forEach(function (key) {
+		Object.keys(il.CommentsUI.languages).forEach(function (key) {
 			if (!options[key]) {
 				options[key] = key;
 			}
@@ -212,8 +219,8 @@ il.CommentsUI.prototype = {
 	 * @returns {string}
 	 */
 	txt: function (key) {
-		if (key in il.CommentsUI.LANGUAGES) {
-			return il.CommentsUI.LANGUAGES[key];
+		if (key in il.CommentsUI.languages) {
+			return il.CommentsUI.languages[key];
 		} else {
 			return key;
 		}
