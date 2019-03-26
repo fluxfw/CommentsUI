@@ -373,7 +373,7 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 			"id" => $this->id,
 			"created" => date("Y-m-d H:i:s", $this->created_timestamp),
 			"modified" => date("Y-m-d H:i:s", $this->updated_timestamp),
-			"content" => $this->comment,
+			"content" => self::dic()->objDataCache()->lookupTitle($this->report_obj_id) . "\n" . $this->comment,
 			"fullname" => self::dic()->objDataCache()->lookupTitle($this->created_user_id),
 			"created_by_current_user" => self::comments(static::class)->canBeStored($this),
 			"deletable" => self::comments(static::class)->canBeDeleted($this),
