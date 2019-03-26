@@ -127,7 +127,7 @@ class UI implements Pluginable {
 
 			$tpl->setVariable("LANGUAGES", json_encode($this->getLanguageStrings()));
 
-			$tpl->setVariable("PROFILE_IMAGE_URL", self::dic()->user()->getPersonalPicturePath("big"));
+			$tpl->setVariable("PROFILE_IMAGE_URL", json_encode(self::dic()->user()->getPersonalPicturePath("big")));
 		}
 
 		return self::output()->getHTML($tpl);
