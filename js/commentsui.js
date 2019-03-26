@@ -168,6 +168,7 @@ il.CommentsUI.prototype = {
 			postComment: this.createComment.bind(this),
 			putComment: this.updateComment.bind(this),
 
+			textFormatter: this.txt.bind(this),
 			timeFormatter: function (time) {
 				return new Date(time).toLocaleString();
 			},
@@ -175,7 +176,7 @@ il.CommentsUI.prototype = {
 
 		Object.keys(il.CommentsUI.LANGUAGES).forEach(function (key) {
 			if (!options[key]) {
-				options[key] = this.txt(key);
+				options[key] = key;
 			}
 		}, this);
 
@@ -211,7 +212,11 @@ il.CommentsUI.prototype = {
 	 * @returns {string}
 	 */
 	txt: function (key) {
-		return il.CommentsUI.LANGUAGES[key];
+		if (key in il.CommentsUI.LANGUAGES) {
+			return il.CommentsUI.LANGUAGES[key];
+		} else {
+			return key;
+		}
 	},
 
 	/**

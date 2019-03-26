@@ -70,7 +70,7 @@ class UI implements Pluginable {
 
 
 	/**
-	 * @return PluginInterface
+	 * @inheritdoc
 	 */
 	public function getPlugin(): PluginInterface {
 		return $this->plugin;
@@ -78,11 +78,9 @@ class UI implements Pluginable {
 
 
 	/**
-	 * @param PluginInterface $plugin
-	 *
-	 * @return self
+	 * @inheritdoc
 	 */
-	public function setPlugin(PluginInterface $plugin): self {
+	public function withPlugin(PluginInterface $plugin): self {
 		$this->plugin = $plugin;
 
 		return $this;
