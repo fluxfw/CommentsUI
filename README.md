@@ -105,7 +105,7 @@ use CommentsUITrait;
 ...
 use srag\Plugins\x\Comment\Ctrl\Ctrl;
 ...
-self::output()->getHTML(self::commentsUI()->setPlugin(self::plugin())->withCtrlClass(new Ctrl()));
+self::output()->getHTML(self::commentsUI()->withPlugin(self::plugin())->withCtrlClass(new Ctrl()));
 ```
 
 ### Dependencies
