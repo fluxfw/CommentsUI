@@ -1,4 +1,4 @@
-commentsui_add_comment#:#Kommentar hinzufügen
+commentsui_comment#:#Kommentar
 commentsui_delete#:#Löschen
 commentsui_edit#:#Bearbeiten
 commentsui_edited#:#Bearbeitet
@@ -6,5 +6,4 @@ commentsui_newest#:#Neuste
 commentsui_no_comments#:#Keine Kommentare
 commentsui_oldest#:#Älteste
 commentsui_save#:#Speichern
-commentsui_send#:#Senden
 commentsui_share_comment_for_user#:#Kommentar für Benutzer freigeben
