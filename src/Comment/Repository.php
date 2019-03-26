@@ -3,6 +3,7 @@
 namespace srag\CommentsUI\Comment;
 
 use srag\DIC\DICTrait;
+use stdClass;
 
 /**
  * Class Repository
@@ -39,6 +40,10 @@ final class Repository {
 	 * @var string|AbstractComment
 	 */
 	protected $comment_class;
+	/**
+	 * @var bool
+	 */
+	protected $output_object_titles = false;
 
 
 	/**
@@ -238,5 +243,42 @@ final class Repository {
 		$comment->setUpdatedUserId(self::dic()->user()->getId());
 
 		$comment->store();
+	}
+
+
+	/**
+	 * @param AbstractComment $comment
+	 *
+	 * @return stdClass
+	 */
+	public function toJson(AbstractComment $comment): stdClass {
+		$content = $comment->getComment();
+
+		if ($this->output_object_titles) {
+			$content = self::dic()->objDataCache()->lookupTitle($comment->getReportObjId()) . "\n" . $content;
+		}
+
+		return (object)[
+			"id" => $comment->getId(),
+			"created" => date("Y-m-d H:i:s", $comment->getCreatedTimestamp()),
+			"modified" => date("Y-m-d H:i:s", $comment->getUpdatedTimestamp()),
+			"content" => $content,
+			"fullname" => self::dic()->objDataCache()->lookupTitle($comment->getCreatedUserId()),
+			"created_by_current_user" => $this->canBeStored($comment),
+			"deletable" => $this->canBeDeleted($comment),
+			"shareable" => $this->canBeShared($comment),
+		];
+	}
+
+
+	/**
+	 * @param bool $output_object_titles
+	 *
+	 * @return self
+	 */
+	public function withOutputObjectTitles(bool $output_object_titles = false): self {
+		$this->output_object_titles = $output_object_titles;
+
+		return $this;
 	}
 }
