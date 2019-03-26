@@ -83,7 +83,7 @@ Expand you plugin class for installing languages of the library to your plugin
 		parent::updateLanguages($a_lang_keys);
 
 		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__ . "/../vendor/srag/commentsui/lang")
-			->updateLanguages();
+			->updateLanguages($a_lang_keys);
 	}
 ...
 ```
