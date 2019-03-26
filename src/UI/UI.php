@@ -88,9 +88,9 @@ class UI implements Pluginable {
 
 
 	/**
-	 *
+	 * @param ilTemplate $tpl
 	 */
-	private function initJs()/*: void*/ {
+	private function initJs(ilTemplate $tpl)/*: void*/ {
 		if (self::$init === false) {
 			self::$init = true;
 
@@ -102,6 +102,12 @@ class UI implements Pluginable {
 
 			self::dic()->mainTemplate()->addJavaScript($dir . "/../../js/commentsui.min.js");
 			self::dic()->mainTemplate()->addCss($dir . "/../../css/commentsui.css");
+
+			$tpl->setCurrentBlock("init");
+
+			$tpl->setVariable("LANGUAGES", json_encode($this->getLanguageStrings()));
+
+			$tpl->setVariable("PROFILE_IMAGE_URL", json_encode(self::dic()->user()->getPersonalPicturePath("big")));
 		}
 	}
 
@@ -110,10 +116,6 @@ class UI implements Pluginable {
 	 * @return string
 	 */
 	public function render(): string {
-		$init = self::$init;
-
-		$this->initJs();
-
 		$tpl = new ilTemplate(__DIR__ . "/../../templates/commentsui.html", false, false);
 
 		$tpl->setVariable("ID", $this->id);
@@ -122,13 +124,7 @@ class UI implements Pluginable {
 
 		$tpl->setVariable("ASYNC_BASE_URL", json_encode($this->ctrl_class->getAsyncBaseUrl()));
 
-		if (!$init) {
-			$tpl->setCurrentBlock("init");
-
-			$tpl->setVariable("LANGUAGES", json_encode($this->getLanguageStrings()));
-
-			$tpl->setVariable("PROFILE_IMAGE_URL", json_encode(self::dic()->user()->getPersonalPicturePath("big")));
-		}
+		$this->initJs($tpl);
 
 		return self::output()->getHTML($tpl);
 	}
