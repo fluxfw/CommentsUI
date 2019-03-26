@@ -71,6 +71,23 @@ class Ctrl extends AbstractCtrl {
 }
 ```
 
+#### Languages
+Expand you plugin class for installing languages of the library to your plugin
+```php
+...
+
+	/**
+	 * @inheritdoc
+	 */
+	public function updateLanguages($a_lang_keys = null) {
+		parent::updateLanguages($a_lang_keys);
+
+		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__ . "/../vendor/srag/commentsui/lang")
+			->updateLanguages();
+	}
+...
+```
+
 #### Trait usage
 Your class in this you want to use CommentsUI needs to use the trait `CommentsUITrait`
 ```php
