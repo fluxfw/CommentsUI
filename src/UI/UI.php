@@ -110,11 +110,7 @@ class UI implements Pluginable {
 	 * @return string
 	 */
 	public function render(): string {
-		if (!self::$init) {
-			$languages = "il.CommentsUI.LANGUAGES=" . json_encode($this->getLanguageStrings());
-		} else {
-			$languages = "";
-		}
+		$init = self::$init;
 
 		$this->initJs();
 
@@ -126,10 +122,12 @@ class UI implements Pluginable {
 
 		$tpl->setVariable("ASYNC_BASE_URL", json_encode($this->ctrl_class->getAsyncBaseUrl()));
 
-		if (!empty($languages)) {
-			$tpl->setCurrentBlock("languages");
+		if (!$init) {
+			$tpl->setCurrentBlock("init");
 
-			$tpl->setVariable("LANGUAGES", $languages);
+			$tpl->setVariable("LANGUAGES", json_encode($this->getLanguageStrings()));
+
+			$tpl->setVariable("PROFILE_IMAGE_URL", self::dic()->user()->getPersonalPicturePath("big"));
 		}
 
 		return self::output()->getHTML($tpl);

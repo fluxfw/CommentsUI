@@ -2,6 +2,7 @@
 
 namespace srag\CommentsUI\Comment;
 
+use ilObjUser;
 use srag\DIC\DICTrait;
 use stdClass;
 
@@ -259,14 +260,15 @@ final class Repository {
 		}
 
 		return (object)[
-			"id" => $comment->getId(),
-			"created" => date("Y-m-d H:i:s", $comment->getCreatedTimestamp()),
-			"modified" => date("Y-m-d H:i:s", $comment->getUpdatedTimestamp()),
 			"content" => $content,
-			"fullname" => self::dic()->objDataCache()->lookupTitle($comment->getCreatedUserId()),
+			"created" => date("Y-m-d H:i:s", $comment->getCreatedTimestamp()),
 			"created_by_current_user" => $this->canBeStored($comment),
 			"deletable" => $this->canBeDeleted($comment),
-			"shareable" => $this->canBeShared($comment),
+			"fullname" => self::dic()->objDataCache()->lookupTitle($comment->getCreatedUserId()),
+			"id" => $comment->getId(),
+			"modified" => date("Y-m-d H:i:s", $comment->getUpdatedTimestamp()),
+			"profile_picture_url" => (new ilObjUser($comment->getCreatedUserId()))->getPersonalPicturePath("big"),
+			"shareable" => $this->canBeShared($comment)
 		];
 	}
 
