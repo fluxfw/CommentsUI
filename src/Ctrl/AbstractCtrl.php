@@ -2,6 +2,7 @@
 
 namespace srag\CommentsUI\Ctrl;
 
+use srag\CommentsUI\Comment\Repository as CommentsRepository;
 use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 
@@ -30,6 +31,14 @@ abstract class AbstractCtrl {
 	 * @abstract
 	 */
 	const COMMENTS_CLASS_NAME = "";
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected static function comments(): CommentsRepository {
+		return CommentsRepository::getInstance(static::COMMENTS_CLASS_NAME);
+	}
 
 
 	/**
@@ -79,7 +88,7 @@ abstract class AbstractCtrl {
 		$report_obj_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_OBJ_ID));
 		$report_user_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_USER_ID));
 
-		$comment = self::comments(static::COMMENTS_CLASS_NAME)->factory()->newInstance();
+		$comment = self::comments()->factory()->newInstance();
 
 		$comment->setReportObjId($report_obj_id);
 
@@ -87,7 +96,7 @@ abstract class AbstractCtrl {
 
 		$comment->setComment(filter_input(INPUT_POST, "content"));
 
-		self::comments(static::COMMENTS_CLASS_NAME)->storeComment($comment);
+		self::comments()->storeComment($comment);
 
 		self::output()->outputJSON($comment);
 	}
@@ -99,11 +108,11 @@ abstract class AbstractCtrl {
 	public function updateComment()/*: void*/ {
 		$comment_id = intval(filter_input(INPUT_GET, self::GET_PARAM_COMMENT_ID));
 
-		$comment = self::comments(static::COMMENTS_CLASS_NAME)->getCommentById($comment_id);
+		$comment = self::comments()->getCommentById($comment_id);
 
 		$comment->setComment(filter_input(INPUT_POST, "content"));
 
-		self::comments(static::COMMENTS_CLASS_NAME)->storeComment($comment);
+		self::comments()->storeComment($comment);
 
 		self::output()->outputJSON($comment);
 	}
@@ -115,9 +124,9 @@ abstract class AbstractCtrl {
 	public function deleteComment()/*: void*/ {
 		$comment_id = intval(filter_input(INPUT_GET, self::GET_PARAM_COMMENT_ID));
 
-		$comment = self::comments(static::COMMENTS_CLASS_NAME)->getCommentById($comment_id);
+		$comment = self::comments()->getCommentById($comment_id);
 
-		self::comments(static::COMMENTS_CLASS_NAME)->deleteComment($comment);
+		self::comments()->deleteComment($comment);
 	}
 
 
@@ -127,9 +136,9 @@ abstract class AbstractCtrl {
 	public function shareComment()/*: void*/ {
 		$comment_id = intval(filter_input(INPUT_GET, self::GET_PARAM_COMMENT_ID));
 
-		$comment = self::comments(static::COMMENTS_CLASS_NAME)->getCommentById($comment_id);
+		$comment = self::comments()->getCommentById($comment_id);
 
-		self::comments(static::COMMENTS_CLASS_NAME)->shareComment($comment);
+		self::comments()->shareComment($comment);
 
 		self::output()->outputJSON($comment);
 	}
@@ -147,14 +156,18 @@ abstract class AbstractCtrl {
 	 * @return string
 	 */
 	public function getAsyncBaseUrl(): string {
-		return self::dic()->ctrl()->getLinkTargetByClass($this->getAsyncClass(), "", "", true, false);
+		$this->initAsyncClass();
+
+		return self::dic()->ctrl()->getLinkTarget($this, "", "", true, false);
 	}
 
 
 	/**
-	 * @return array
+	 *
 	 */
-	public abstract function getAsyncClass(): array;
+	public function initAsyncClass()/*: void*/ {
+
+	}
 
 
 	/**

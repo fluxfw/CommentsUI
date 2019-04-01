@@ -56,9 +56,9 @@ use srag\Plugins\x\Comment\Comment;
 /**
  * ...
  *
- * @ilCtrl_isCalledBy srag\Plugins\x\Comment\Ctrl\Ctrl: ilUIPluginRouterGUI
+ * @ilCtrl_isCalledBy srag\Plugins\x\Comment\Ctrl\XCtrl: ilUIPluginRouterGUI
  */
-class Ctrl extends AbstractCtrl {
+class XCtrl extends AbstractCtrl {
 	...
 	const COMMENTS_CLASS_NAME = Comment::class;
 	...
@@ -103,9 +103,9 @@ use CommentsUITrait;
 #### UI usage
 ```php
 ...
-use srag\Plugins\x\Comment\Ctrl\Ctrl;
+use srag\Plugins\x\Comment\Ctrl\XCtrl;
 ...
-self::output()->getHTML(self::commentsUI()->withPlugin(self::plugin())->withCtrlClass(new Ctrl()));
+self::output()->getHTML(self::commentsUI()->withPlugin(self::plugin())->withCtrlClass(new XCtrl()));
 ```
 
 ### Dependencies

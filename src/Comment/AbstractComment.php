@@ -6,6 +6,7 @@ use ActiveRecord;
 use arConnector;
 use ilDateTime;
 use JsonSerializable;
+use srag\CommentsUI\Comment\Repository as CommentsRepository;
 use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 use stdClass;
@@ -27,6 +28,14 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 	 * @abstract
 	 */
 	const TABLE_NAME = "";
+
+
+	/**
+	 * @inheritdoc
+	 */
+	protected static function comments(): CommentsRepository {
+		return CommentsRepository::getInstance(static::class);
+	}
 
 
 	/**
@@ -369,6 +378,6 @@ abstract class AbstractComment extends ActiveRecord implements JsonSerializable 
 	 * @return stdClass
 	 */
 	public function jsonSerialize(): stdClass {
-		return self::comments(static::class)->toJson($this);
+		return self::comments()->toJson($this);
 	}
 }
