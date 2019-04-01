@@ -156,18 +156,14 @@ abstract class AbstractCtrl {
 	 * @return string
 	 */
 	public function getAsyncBaseUrl(): string {
-		$this->initAsyncClass();
-
-		return self::dic()->ctrl()->getLinkTarget($this, "", "", true, false);
+		return self::dic()->ctrl()->getLinkTargetByClass($this->getAsyncClass(), "", "", true, false);
 	}
 
 
 	/**
-	 *
+	 * @return array
 	 */
-	public function initAsyncClass()/*: void*/ {
-
-	}
+	public abstract function getAsyncClass(): array;
 
 
 	/**
