@@ -11,11 +11,11 @@ use srag\DIC\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class Factory {
+final class Factory implements FactoryInterface {
 
 	use DICTrait;
 	/**
-	 * @var self[]
+	 * @var FactoryInterface[]
 	 */
 	protected static $instances = [];
 
@@ -23,9 +23,9 @@ final class Factory {
 	/**
 	 * @param string $comment_class
 	 *
-	 * @return self
+	 * @return FactoryInterface
 	 */
-	public static function getInstance(string $comment_class): self {
+	public static function getInstance(string $comment_class): FactoryInterface {
 		if (!isset(self::$instances[$comment_class])) {
 			self::$instances[$comment_class] = new self($comment_class);
 		}
@@ -35,7 +35,7 @@ final class Factory {
 
 
 	/**
-	 * @var string|AbstractComment
+	 * @var string|Comment
 	 */
 	protected $comment_class;
 
@@ -51,9 +51,9 @@ final class Factory {
 
 
 	/**
-	 * @return AbstractComment
+	 * @inheritdoc
 	 */
-	public function newInstance(): AbstractComment {
+	public function newInstance(): Comment {
 		$comment = new $this->comment_class();
 
 		return $comment;

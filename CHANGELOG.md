@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.6.0]
+- Interfaces
+
 ## [0.5.2]
 - Implementation
 

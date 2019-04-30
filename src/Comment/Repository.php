@@ -13,12 +13,11 @@ use stdClass;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class Repository {
+final class Repository implements RepositoryInterface {
 
 	use DICTrait;
-	const EDIT_LIMIT_MINUTES = 5;
 	/**
-	 * @var self[]
+	 * @var RepositoryInterface[]
 	 */
 	protected static $instances = [];
 
@@ -26,9 +25,9 @@ final class Repository {
 	/**
 	 * @param string $comment_class
 	 *
-	 * @return self
+	 * @return RepositoryInterface
 	 */
-	public static function getInstance(string $comment_class): self {
+	public static function getInstance(string $comment_class): RepositoryInterface {
 		if (!isset(self::$instances[$comment_class])) {
 			self::$instances[$comment_class] = new self($comment_class);
 		}
@@ -38,7 +37,7 @@ final class Repository {
 
 
 	/**
-	 * @var string|AbstractComment
+	 * @var string|Comment
 	 */
 	protected $comment_class;
 	/**
@@ -58,11 +57,9 @@ final class Repository {
 
 
 	/**
-	 * @param AbstractComment $comment
-	 *
-	 * @return bool
+	 * @inheritdoc
 	 */
-	public function canBeDeleted(AbstractComment $comment): bool {
+	public function canBeDeleted(Comment $comment): bool {
 		if (empty($comment->getId())) {
 			return false;
 		}
@@ -80,11 +77,9 @@ final class Repository {
 
 
 	/**
-	 * @param AbstractComment $comment
-	 *
-	 * @return bool
+	 * @inheritdoc
 	 */
-	public function canBeShared(AbstractComment $comment): bool {
+	public function canBeShared(Comment $comment): bool {
 		if (empty($comment->getId())) {
 			return false;
 		}
@@ -102,11 +97,9 @@ final class Repository {
 
 
 	/**
-	 * @param AbstractComment $comment
-	 *
-	 * @return bool
+	 * @inheritdoc
 	 */
-	public function canBeStored(AbstractComment $comment): bool {
+	public function canBeStored(Comment $comment): bool {
 		if (empty($comment->getId())) {
 			return true;
 		}
@@ -126,9 +119,9 @@ final class Repository {
 
 
 	/**
-	 * @param AbstractComment $comment
+	 * @inheritdoc
 	 */
-	public function deleteComment(AbstractComment $comment)/*: void*/ {
+	public function deleteComment(Comment $comment)/*: void*/ {
 		if (!$this->canBeDeleted($comment)) {
 			return;
 		}
@@ -140,21 +133,19 @@ final class Repository {
 
 
 	/**
-	 * @return Factory
+	 * @inheritdoc
 	 */
-	public function factory(): Factory {
+	public function factory(): FactoryInterface {
 		return Factory::getInstance($this->comment_class);
 	}
 
 
 	/**
-	 * @param int $id
-	 *
-	 * @return AbstractComment|null
+	 * @inheritdoc
 	 */
 	public function getCommentById(int $id)/*: ?Comment*/ {
 		/**
-		 * @var AbstractComment|null $comment
+		 * @var Comment|null $comment
 		 */
 
 		$comment = $this->comment_class::where([ "id" => $id ])->first();
@@ -164,14 +155,11 @@ final class Repository {
 
 
 	/**
-	 * @param int $report_obj_id
-	 * @param int $report_user_id
-	 *
-	 * @return AbstractComment[]
+	 * @inheritdoc
 	 */
 	public function getCommentsForReport(int $report_obj_id, int $report_user_id): array {
 		/**
-		 * @var AbstractComment[] $comments
+		 * @var Comment[] $comments
 		 */
 
 		$comments = array_values($this->comment_class::where([
@@ -185,14 +173,12 @@ final class Repository {
 
 
 	/**
-	 * @param int|null $report_obj_id
-	 *
-	 * @return AbstractComment[]
+	 * @inheritdoc
 	 */
 	public function getCommentsForCurrentUser(/*?int*/
 		$report_obj_id = null): array {
 		/**
-		 * @var AbstractComment[] $comments
+		 * @var Comment[] $comments
 		 */
 
 		$where = [
@@ -212,9 +198,9 @@ final class Repository {
 
 
 	/**
-	 * @param AbstractComment $comment
+	 * @inheritdoc
 	 */
-	public function shareComment(AbstractComment $comment)/*: void*/ {
+	public function shareComment(Comment $comment)/*: void*/ {
 		if (!$this->canBeShared($comment)) {
 			return;
 		}
@@ -226,9 +212,9 @@ final class Repository {
 
 
 	/**
-	 * @param AbstractComment $comment
+	 * @inheritdoc
 	 */
-	public function storeComment(AbstractComment $comment)/*: void*/ {
+	public function storeComment(Comment $comment)/*: void*/ {
 		if (!$this->canBeStored($comment)) {
 			return;
 		}
@@ -248,11 +234,9 @@ final class Repository {
 
 
 	/**
-	 * @param AbstractComment $comment
-	 *
-	 * @return stdClass
+	 * @inheritdoc
 	 */
-	public function toJson(AbstractComment $comment): stdClass {
+	public function toJson(Comment $comment): stdClass {
 		$content = $comment->getComment();
 
 		if ($this->output_object_titles) {
@@ -274,11 +258,9 @@ final class Repository {
 
 
 	/**
-	 * @param bool $output_object_titles
-	 *
-	 * @return self
+	 * @inheritdoc
 	 */
-	public function withOutputObjectTitles(bool $output_object_titles = false): self {
+	public function withOutputObjectTitles(bool $output_object_titles = false): RepositoryInterface {
 		$this->output_object_titles = $output_object_titles;
 
 		return $this;

@@ -2,8 +2,10 @@
 
 namespace srag\CommentsUI\Utils;
 
-use srag\CommentsUI\Comment\Repository as CommentsRepository;
-use srag\CommentsUI\UI\UI as CommentsUI;
+use srag\CommentsUI\Comment\Repository;
+use srag\CommentsUI\Comment\RepositoryInterface;
+use srag\CommentsUI\UI\UI;
+use srag\CommentsUI\UI\UIInterface;
 
 /**
  * Trait CommentsUITrait
@@ -17,17 +19,17 @@ trait CommentsUITrait {
 	/**
 	 * @param string $comment_class
 	 *
-	 * @return CommentsRepository
+	 * @return RepositoryInterface
 	 */
-	protected static function comments(string $comment_class): CommentsRepository {
-		return CommentsRepository::getInstance($comment_class);
+	protected static function comments(string $comment_class): RepositoryInterface {
+		return Repository::getInstance($comment_class);
 	}
 
 
 	/**
-	 * @return CommentsUI
+	 * @return UIInterface
 	 */
-	protected static function commentsUI(): CommentsUI {
-		return new CommentsUI();
+	protected static function commentsUI(): UIInterface {
+		return new UI();
 	}
 }
