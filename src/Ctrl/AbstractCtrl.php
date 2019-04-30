@@ -30,7 +30,7 @@ abstract class AbstractCtrl implements CtrlInterface {
 	 * @inheritdoc
 	 */
 	protected static function comments(): RepositoryInterface {
-		return Repository::getInstance(static::class);
+		return Repository::getInstance(static::COMMENTS_CLASS_NAME);
 	}
 
 
