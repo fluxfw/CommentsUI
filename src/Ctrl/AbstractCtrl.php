@@ -2,7 +2,8 @@
 
 namespace srag\CommentsUI\Ctrl;
 
-use srag\CommentsUI\Comment\Repository as CommentsRepository;
+use srag\CommentsUI\Comment\Repository;
+use srag\CommentsUI\Comment\RepositoryInterface;
 use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 
@@ -13,18 +14,10 @@ use srag\DIC\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class AbstractCtrl {
+abstract class AbstractCtrl implements CtrlInterface {
 
 	use DICTrait;
 	use CommentsUITrait;
-	const CMD_CREATE_COMMENT = "createComment";
-	const CMD_DELETE_COMMENT = "deleteComment";
-	const CMD_GET_COMMENTS = "getComments";
-	const CMD_SHARE_COMMENT = "shareComment";
-	const CMD_UPDATE_COMMENT = "updateComment";
-	const GET_PARAM_COMMENT_ID = "comment_id";
-	const GET_PARAM_REPORT_OBJ_ID = "report_obj_id";
-	const GET_PARAM_REPORT_USER_ID = "report_user_id";
 	/**
 	 * @var string
 	 *
@@ -36,8 +29,8 @@ abstract class AbstractCtrl {
 	/**
 	 * @inheritdoc
 	 */
-	protected static function comments(): CommentsRepository {
-		return CommentsRepository::getInstance(static::COMMENTS_CLASS_NAME);
+	protected static function comments(): RepositoryInterface {
+		return Repository::getInstance(static::class);
 	}
 
 
@@ -50,7 +43,7 @@ abstract class AbstractCtrl {
 
 
 	/**
-	 *
+	 * @inheritdoc
 	 */
 	public function executeCommand()/*: void*/ {
 		$cmd = self::dic()->ctrl()->getCmd();
@@ -73,7 +66,7 @@ abstract class AbstractCtrl {
 	/**
 	 *
 	 */
-	public function getComments()/*: void*/ {
+	protected function getComments()/*: void*/ {
 		$report_obj_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_OBJ_ID));
 		$report_user_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_USER_ID));
 
@@ -84,7 +77,7 @@ abstract class AbstractCtrl {
 	/**
 	 *
 	 */
-	public function createComment()/*: void*/ {
+	protected function createComment()/*: void*/ {
 		$report_obj_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_OBJ_ID));
 		$report_user_id = intval(filter_input(INPUT_GET, self::GET_PARAM_REPORT_USER_ID));
 
@@ -105,7 +98,7 @@ abstract class AbstractCtrl {
 	/**
 	 *
 	 */
-	public function updateComment()/*: void*/ {
+	protected function updateComment()/*: void*/ {
 		$comment_id = intval(filter_input(INPUT_GET, self::GET_PARAM_COMMENT_ID));
 
 		$comment = self::comments()->getCommentById($comment_id);
@@ -121,7 +114,7 @@ abstract class AbstractCtrl {
 	/**
 	 *
 	 */
-	public function deleteComment()/*: void*/ {
+	protected function deleteComment()/*: void*/ {
 		$comment_id = intval(filter_input(INPUT_GET, self::GET_PARAM_COMMENT_ID));
 
 		$comment = self::comments()->getCommentById($comment_id);
@@ -133,7 +126,7 @@ abstract class AbstractCtrl {
 	/**
 	 *
 	 */
-	public function shareComment()/*: void*/ {
+	protected function shareComment()/*: void*/ {
 		$comment_id = intval(filter_input(INPUT_GET, self::GET_PARAM_COMMENT_ID));
 
 		$comment = self::comments()->getCommentById($comment_id);
@@ -145,7 +138,7 @@ abstract class AbstractCtrl {
 
 
 	/**
-	 * @return bool
+	 * @inheritdoc
 	 */
 	public function getIsReadOnly(): bool {
 		return false;
@@ -153,24 +146,9 @@ abstract class AbstractCtrl {
 
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function getAsyncBaseUrl(): string {
 		return self::dic()->ctrl()->getLinkTargetByClass($this->getAsyncClass(), "", "", true, false);
 	}
-
-
-	/**
-	 * @return array
-	 */
-	public abstract function getAsyncClass(): array;
-
-
-	/**
-	 * @param int $report_obj_id
-	 * @param int $report_user_id
-	 *
-	 * @return array
-	 */
-	public abstract function getCommentsArray(int $report_obj_id, int $report_user_id): array;
 }

@@ -3,9 +3,8 @@
 namespace srag\CommentsUI\UI;
 
 use ilTemplate;
-use srag\CommentsUI\Ctrl\AbstractCtrl;
+use srag\CommentsUI\Ctrl\CtrlInterface;
 use srag\DIC\DICTrait;
-use srag\DIC\Plugin\Pluginable;
 use srag\DIC\Plugin\PluginInterface;
 
 /**
@@ -15,10 +14,9 @@ use srag\DIC\Plugin\PluginInterface;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class UI implements Pluginable {
+class UI implements UIInterface {
 
 	use DICTrait;
-	const LANG_MODULE_COMMENTSUI = "commentsui";
 	/**
 	 * @var bool
 	 */
@@ -28,7 +26,7 @@ class UI implements Pluginable {
 	 */
 	protected $id = "";
 	/**
-	 * @var AbstractCtrl
+	 * @var CtrlInterface
 	 */
 	protected $ctrl_class;
 	/**
@@ -46,24 +44,10 @@ class UI implements Pluginable {
 
 
 	/**
-	 * @param string $id
-	 *
-	 * @return self
+	 * @inheritdoc
 	 */
-	public function withId(string $id): self {
+	public function withId(string $id): UIInterface {
 		$this->id = $id;
-
-		return $this;
-	}
-
-
-	/**
-	 * @param AbstractCtrl $ctrl_class
-	 *
-	 * @return self
-	 */
-	public function withCtrlClass(AbstractCtrl $ctrl_class): self {
-		$this->ctrl_class = $ctrl_class;
 
 		return $this;
 	}
@@ -82,6 +66,16 @@ class UI implements Pluginable {
 	 */
 	public function withPlugin(PluginInterface $plugin): self {
 		$this->plugin = $plugin;
+
+		return $this;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function withCtrlClass(CtrlInterface $ctrl_class): UIInterface {
+		$this->ctrl_class = $ctrl_class;
 
 		return $this;
 	}
@@ -113,7 +107,7 @@ class UI implements Pluginable {
 
 
 	/**
-	 * @return string
+	 * @inheritdoc
 	 */
 	public function render(): string {
 		$tpl = new ilTemplate(__DIR__ . "/../../templates/commentsui.html", false, false);
