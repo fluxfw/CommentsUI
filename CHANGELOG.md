@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.6.2]
+- Optimizations
+
 ## [0.6.1]
 - Interfaces
 

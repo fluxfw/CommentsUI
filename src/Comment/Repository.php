@@ -148,7 +148,7 @@ final class Repository implements RepositoryInterface {
 		 * @var Comment|null $comment
 		 */
 
-		$comment = $this->comment_class::where([ "id" => $id ])->first();
+		$comment = call_user_func($this->comment_class . "::where", [ "id" => $id ])->first();
 
 		return $comment;
 	}
@@ -162,7 +162,7 @@ final class Repository implements RepositoryInterface {
 		 * @var Comment[] $comments
 		 */
 
-		$comments = array_values($this->comment_class::where([
+		$comments = array_values(call_user_func($this->comment_class . "::where", [
 			"deleted" => false,
 			"report_obj_id" => $report_obj_id,
 			"report_user_id" => $report_user_id
@@ -191,7 +191,7 @@ final class Repository implements RepositoryInterface {
 			$where["report_obj_id"] = $report_obj_id;
 		}
 
-		$comments = array_values($this->comment_class::where($where)->orderBy("updated_timestamp", "desc")->get());
+		$comments = array_values(call_user_func($this->comment_class . "::where", $where)->orderBy("updated_timestamp", "desc")->get());
 
 		return $comments;
 	}
