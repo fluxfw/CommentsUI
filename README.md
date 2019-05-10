@@ -108,15 +108,9 @@ use srag\Plugins\x\Comment\Ctrl\XCtrl;
 self::output()->getHTML(self::commentsUI()->withPlugin(self::plugin())->withCtrlClass(new XCtrl()));
 ```
 
-### Dependencies
+### Requirements
 * ILIAS 5.3 or ILIAS 5.4
 * PHP >=7.0
-* [composer](https://getcomposer.org)
-* [npm](https://nodejs.org)
-* [jquery-comments](https://www.npmjs.com/package/jquery-comments)
-* [srag/dic](https://packagist.org/packages/srag/dic)
-
-Please use it for further development!
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests
