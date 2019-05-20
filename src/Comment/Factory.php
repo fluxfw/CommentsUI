@@ -2,7 +2,9 @@
 
 namespace srag\CommentsUI\Comment;
 
+use ilDateTime;
 use srag\DIC\DICTrait;
+use stdClass;
 
 /**
  * Class Factory
@@ -47,6 +49,27 @@ final class Factory implements FactoryInterface {
 	 */
 	private function __construct(string $comment_class) {
 		$this->comment_class = $comment_class;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function fromDB(stdClass $data): Comment {
+		$comment = $this->newInstance();
+
+		$comment->setId($data->id);
+		$comment->setComment($data->comment);
+		$comment->setReportObjId($data->report_obj_id);
+		$comment->setReportUserId($data->report_user_id);
+		$comment->setCreatedTimestamp($data->created_timestamp);
+		$comment->setCreatedUserId($data->created_user_id);
+		$comment->setUpdatedTimestamp((new ilDateTime($data->updated_timestamp, IL_CAL_DATETIME))->getUnixTime());
+		$comment->setUpdatedUserId((new ilDateTime($data->updated_user_id, IL_CAL_DATETIME))->getUnixTime());
+		$comment->setIsShared($data->is_shared);
+		$comment->setDeleted($data->deleted);
+
+		return $comment;
 	}
 
 

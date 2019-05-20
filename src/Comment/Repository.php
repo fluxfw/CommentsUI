@@ -2,6 +2,7 @@
 
 namespace srag\CommentsUI\Comment;
 
+use ilDBConstants;
 use ilObjUser;
 use srag\DIC\DICTrait;
 use stdClass;
@@ -128,7 +129,7 @@ final class Repository implements RepositoryInterface {
 
 		$comment->setDeleted(true);
 
-		$comment->store();
+		$this->storeComment($comment, false);
 	}
 
 
@@ -147,8 +148,11 @@ final class Repository implements RepositoryInterface {
 		/**
 		 * @var Comment|null $comment
 		 */
-
-		$comment = call_user_func($this->comment_class . "::where", [ "id" => $id ])->first();
+		$comment = self::dic()->database()->fetchObjectCallback(self::dic()->database()->queryF("SELECT * FROM " . self::dic()->database()
+				->quoteIdentifier($this->comment_class::TABLE_NAME) . " WHERE id=%s", [ ilDBConstants::T_INTEGER ], [ $id ]), [
+			$this->factory(),
+			"fromDB"
+		]);
 
 		return $comment;
 	}
@@ -161,12 +165,16 @@ final class Repository implements RepositoryInterface {
 		/**
 		 * @var Comment[] $comments
 		 */
-
-		$comments = array_values(call_user_func($this->comment_class . "::where", [
-			"deleted" => false,
-			"report_obj_id" => $report_obj_id,
-			"report_user_id" => $report_user_id
-		])->orderBy("updated_timestamp", "desc")->get());
+		$comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF("SELECT * FROM " . self::dic()->database()
+				->quoteIdentifier($this->comment_class::TABLE_NAME)
+			. " WHERE deleted=%s AND report_obj_id=%s AND report_user_id=%s ORDER BY updated_timestamp DESC", [
+			ilDBConstants::T_INTEGER,
+			ilDBConstants::T_INTEGER,
+			ilDBConstants::T_INTEGER
+		], [ false, $report_obj_id, $report_user_id ]), [
+			$this->factory(),
+			"fromDB"
+		]));
 
 		return $comments;
 	}
@@ -175,23 +183,38 @@ final class Repository implements RepositoryInterface {
 	/**
 	 * @inheritdoc
 	 */
-	public function getCommentsForCurrentUser(/*?int*/
-		$report_obj_id = null): array {
-		/**
-		 * @var Comment[] $comments
-		 */
-
+	public function getCommentsForCurrentUser(/*?int*/ $report_obj_id = null): array {
 		$where = [
-			"deleted" => false,
-			"report_user_id" => self::dic()->user()->getId(),
-			"is_shared" => true
+			"deleted=%s",
+			"report_obj_id=%s",
+			"report_user_id=%s"
+		];
+		$types = [
+			ilDBConstants::T_INTEGER,
+			ilDBConstants::T_INTEGER,
+			ilDBConstants::T_INTEGER
+		];
+		$values = [
+			false,
+			self::dic()->user()->getId(),
+			true
 		];
 
 		if (!empty($report_obj_id)) {
-			$where["report_obj_id"] = $report_obj_id;
+			$where[] = "report_obj_id=%s";
+			$types[] = ilDBConstants::T_INTEGER;
+			$values[] = $report_obj_id;
 		}
 
-		$comments = array_values(call_user_func($this->comment_class . "::where", $where)->orderBy("updated_timestamp", "desc")->get());
+		/**
+		 * @var Comment[] $comments
+		 */
+		$comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF("SELECT * FROM " . self::dic()->database()
+				->quoteIdentifier($this->comment_class::TABLE_NAME) . " WHERE " . implode(" AND ", $where)
+			. " ORDER BY updated_timestamp DESC", $types, $values), [
+			$this->factory(),
+			"fromDB"
+		]));
 
 		return $comments;
 	}
@@ -207,15 +230,15 @@ final class Repository implements RepositoryInterface {
 
 		$comment->setIsShared(true);
 
-		$comment->store();
+		$this->storeComment($comment, false);
 	}
 
 
 	/**
 	 * @inheritdoc
 	 */
-	public function storeComment(Comment $comment)/*: void*/ {
-		if (!$this->canBeStored($comment)) {
+	public function storeComment(Comment $comment, bool $check_can_be_store = true)/*: void*/ {
+		if ($check_can_be_store && !$this->canBeStored($comment)) {
 			return;
 		}
 
@@ -229,7 +252,17 @@ final class Repository implements RepositoryInterface {
 		$comment->setUpdatedTimestamp($time);
 		$comment->setUpdatedUserId(self::dic()->user()->getId());
 
-		$comment->store();
+		self::dic()->database()->store($this->comment_class::TABLE_NAME, [
+			"comment" => [ ilDBConstants::T_TEXT, $comment->getComment() ],
+			"report_obj_id" => [ ilDBConstants::T_INTEGER, $comment->getReportObjId() ],
+			"report_user_id" => [ ilDBConstants::T_INTEGER, $comment->getReportUserId() ],
+			"created_timestamp" => [ ilDBConstants::T_INTEGER, (new ilDateTime($comment->getCreatedTimestamp(), IL_CAL_UNIX))->get(IL_CAL_DATETIME) ],
+			"created_user_id" => [ ilDBConstants::T_INTEGER, $comment->getCreatedUserId() ],
+			"updated_timestamp" => [ ilDBConstants::T_INTEGER, (new ilDateTime($comment->getUpdatedTimestamp(), IL_CAL_UNIX))->get(IL_CAL_DATETIME) ],
+			"updated_user_id" => [ ilDBConstants::T_INTEGER, $comment->getUpdatedUserId() ],
+			"is_shared" => [ ilDBConstants::T_INTEGER, $comment->isShared() ],
+			"deleted" => [ ilDBConstants::T_INTEGER, $comment->isDeleted() ]
+		], "id", $comment->getId());
 	}
 
 
