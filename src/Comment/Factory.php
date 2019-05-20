@@ -62,10 +62,10 @@ final class Factory implements FactoryInterface {
 		$comment->setComment($data->comment);
 		$comment->setReportObjId($data->report_obj_id);
 		$comment->setReportUserId($data->report_user_id);
-		$comment->setCreatedTimestamp($data->created_timestamp);
+		$comment->setCreatedTimestamp((new ilDateTime($data->created_timestamp, IL_CAL_DATETIME))->getUnixTime());
 		$comment->setCreatedUserId($data->created_user_id);
 		$comment->setUpdatedTimestamp((new ilDateTime($data->updated_timestamp, IL_CAL_DATETIME))->getUnixTime());
-		$comment->setUpdatedUserId((new ilDateTime($data->updated_user_id, IL_CAL_DATETIME))->getUnixTime());
+		$comment->setUpdatedUserId($data->updated_user_id);
 		$comment->setIsShared($data->is_shared);
 		$comment->setDeleted($data->deleted);
 
