@@ -34,7 +34,7 @@ Add an update step to your `dbupdate.php`
 ...
 <#x>
 <?php
-\srag\Plugins\x\Comment\Comment::updateDB();
+\srag\Plugins\x\Comment\Comment::updateDB_();
 ?>
 ```
 
@@ -43,7 +43,7 @@ and not forget to add an uninstaller step in your plugin class too
 ...
 use srag\Plugins\x\Comment\Comment;
 ...
-self::dic()->database()->dropTable(Comment::TABLE_NAME, false);
+Comment::dropDB_();
 ...
 ```
 

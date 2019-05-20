@@ -2,6 +2,7 @@
 
 namespace srag\CommentsUI\Comment;
 
+use ilDateTime;
 use ilDBConstants;
 use ilObjUser;
 use srag\DIC\DICTrait;
@@ -256,9 +257,9 @@ final class Repository implements RepositoryInterface {
 			"comment" => [ ilDBConstants::T_TEXT, $comment->getComment() ],
 			"report_obj_id" => [ ilDBConstants::T_INTEGER, $comment->getReportObjId() ],
 			"report_user_id" => [ ilDBConstants::T_INTEGER, $comment->getReportUserId() ],
-			"created_timestamp" => [ ilDBConstants::T_INTEGER, (new ilDateTime($comment->getCreatedTimestamp(), IL_CAL_UNIX))->get(IL_CAL_DATETIME) ],
+			"created_timestamp" => [ ilDBConstants::T_TEXT, (new ilDateTime($comment->getCreatedTimestamp(), IL_CAL_UNIX))->get(IL_CAL_DATETIME) ],
 			"created_user_id" => [ ilDBConstants::T_INTEGER, $comment->getCreatedUserId() ],
-			"updated_timestamp" => [ ilDBConstants::T_INTEGER, (new ilDateTime($comment->getUpdatedTimestamp(), IL_CAL_UNIX))->get(IL_CAL_DATETIME) ],
+			"updated_timestamp" => [ ilDBConstants::T_TEXT, (new ilDateTime($comment->getUpdatedTimestamp(), IL_CAL_UNIX))->get(IL_CAL_DATETIME) ],
 			"updated_user_id" => [ ilDBConstants::T_INTEGER, $comment->getUpdatedUserId() ],
 			"is_shared" => [ ilDBConstants::T_INTEGER, $comment->isShared() ],
 			"deleted" => [ ilDBConstants::T_INTEGER, $comment->isDeleted() ]

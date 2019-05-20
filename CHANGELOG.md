@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.7.1]
+- Fixes
+
 ## [0.7.0]
 - Use database
 
