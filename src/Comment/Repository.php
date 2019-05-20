@@ -187,8 +187,8 @@ final class Repository implements RepositoryInterface {
 	public function getCommentsForCurrentUser(/*?int*/ $report_obj_id = null): array {
 		$where = [
 			"deleted=%s",
-			"report_obj_id=%s",
-			"report_user_id=%s"
+			"report_user_id=%s",
+			"is_shared=%s"
 		];
 		$types = [
 			ilDBConstants::T_INTEGER,
