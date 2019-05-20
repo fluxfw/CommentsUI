@@ -51,7 +51,7 @@ abstract class AbstractComment extends ActiveRecord implements Comment {
 	/**
 	 *
 	 */
-	public static function updateDB_() {
+	public static function updateDB_()/*: void*/ {
 		self::updateDB();
 
 		if (self::dic()->database()->sequenceExists(static::TABLE_NAME)) {
@@ -69,7 +69,7 @@ abstract class AbstractComment extends ActiveRecord implements Comment {
 	/**
 	 *
 	 */
-	public static function dropDB_() {
+	public static function dropDB_()/*: void*/ {
 		self::dic()->database()->dropTable(static::TABLE_NAME, false);
 		self::dic()->database()->dropAutoIncrementTable(static::TABLE_NAME);
 	}
