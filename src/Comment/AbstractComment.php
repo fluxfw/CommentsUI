@@ -4,6 +4,7 @@ namespace srag\CommentsUI\Comment;
 
 use ActiveRecord;
 use arConnector;
+use ilDatabaseException;
 use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 use stdClass;
@@ -48,6 +49,33 @@ abstract class AbstractComment extends ActiveRecord implements Comment {
 
 
 	/**
+	 *
+	 */
+	public static function updateDB_() {
+		self::updateDB();
+
+		if (self::dic()->database()->sequenceExists(static::TABLE_NAME)) {
+			self::dic()->database()->dropSequence(static::TABLE_NAME);
+		}
+
+		try {
+			self::dic()->database()->createAutoIncrement(static::TABLE_NAME, "id");
+		} catch (ilDatabaseException $ex) {
+
+		}
+	}
+
+
+	/**
+	 *
+	 */
+	public static function dropDB_() {
+		self::dic()->database()->dropTable(static::TABLE_NAME, false);
+		self::dic()->database()->dropAutoIncrementTable(static::TABLE_NAME);
+	}
+
+
+	/**
 	 * @var int
 	 *
 	 * @con_has_field   true
@@ -55,7 +83,6 @@ abstract class AbstractComment extends ActiveRecord implements Comment {
 	 * @con_length      8
 	 * @con_is_notnull  true
 	 * @con_is_primary  true
-	 * @con_sequence    true
 	 */
 	protected $id;
 	/**
