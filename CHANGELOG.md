@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.7.0]
+- Use database
+
 ## [0.6.2]
 - Optimizations
 
