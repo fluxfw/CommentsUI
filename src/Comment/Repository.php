@@ -149,8 +149,8 @@ final class Repository implements RepositoryInterface {
 		/**
 		 * @var Comment|null $comment
 		 */
-		$comment = self::dic()->database()->fetchObjectCallback(self::dic()->database()->queryF("SELECT * FROM " . self::dic()->database()
-				->quoteIdentifier($this->comment_class::TABLE_NAME) . " WHERE id=%s", [ ilDBConstants::T_INTEGER ], [ $id ]), [
+		$comment = self::dic()->database()->fetchObjectCallback(self::dic()->database()->queryF('SELECT * FROM ' . self::dic()->database()
+				->quoteIdentifier($this->comment_class::TABLE_NAME) . ' WHERE id=%s', [ ilDBConstants::T_INTEGER ], [ $id ]), [
 			$this->factory(),
 			"fromDB"
 		]);
@@ -166,9 +166,9 @@ final class Repository implements RepositoryInterface {
 		/**
 		 * @var Comment[] $comments
 		 */
-		$comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF("SELECT * FROM " . self::dic()->database()
+		$comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF('SELECT * FROM ' . self::dic()->database()
 				->quoteIdentifier($this->comment_class::TABLE_NAME)
-			. " WHERE deleted=%s AND report_obj_id=%s AND report_user_id=%s ORDER BY updated_timestamp DESC", [
+			. ' WHERE deleted=%s AND report_obj_id=%s AND report_user_id=%s ORDER BY updated_timestamp DESC', [
 			ilDBConstants::T_INTEGER,
 			ilDBConstants::T_INTEGER,
 			ilDBConstants::T_INTEGER
@@ -210,9 +210,9 @@ final class Repository implements RepositoryInterface {
 		/**
 		 * @var Comment[] $comments
 		 */
-		$comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF("SELECT * FROM " . self::dic()->database()
-				->quoteIdentifier($this->comment_class::TABLE_NAME) . " WHERE " . implode(" AND ", $where)
-			. " ORDER BY updated_timestamp DESC", $types, $values), [
+		$comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF('SELECT * FROM ' . self::dic()->database()
+				->quoteIdentifier($this->comment_class::TABLE_NAME) . ' WHERE ' . implode(' AND ', $where)
+			. ' ORDER BY updated_timestamp DESC', $types, $values), [
 			$this->factory(),
 			"fromDB"
 		]));
