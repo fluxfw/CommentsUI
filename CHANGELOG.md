@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.7.5]
+- Fixes
+
 ## [0.7.4]
 - Fixes
 
