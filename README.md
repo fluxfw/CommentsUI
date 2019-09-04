@@ -75,7 +75,6 @@ class XCtrl extends AbstractCtrl {
 Expand you plugin class for installing languages of the library to your plugin
 ```php
 ...
-
 	/**
 	 * @inheritdoc
 	 */
