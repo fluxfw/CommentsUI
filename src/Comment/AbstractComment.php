@@ -7,6 +7,7 @@ use arConnector;
 use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 use stdClass;
+use Throwable;
 
 /**
  * Class AbstractComment
@@ -51,7 +52,11 @@ abstract class AbstractComment extends ActiveRecord implements Comment {
 	 *
 	 */
 	public static function updateDB_()/*: void*/ {
-		self::updateDB();
+	    try {
+            self::updateDB();
+        } catch (Throwable $ex) {
+	        // Fix Call to a member function getName() on null (Because not use ILIAS primary key)
+        }
 
 		if (self::dic()->database()->sequenceExists(static::TABLE_NAME)) {
 			self::dic()->database()->dropSequence(static::TABLE_NAME);
