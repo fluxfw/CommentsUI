@@ -60,7 +60,7 @@ abstract class AbstractComment extends ActiveRecord implements Comment
         try {
             self::updateDB();
         } catch (Throwable $ex) {
-            // Fix Call to a member function getName() on null (Because not use ILIAS primary key)
+            // Fix Call to a member function getName() on null (Because not use ILIAS sequence)
         }
 
         if (self::dic()->database()->sequenceExists(static::TABLE_NAME)) {
