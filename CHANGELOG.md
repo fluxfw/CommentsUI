@@ -1,7 +1,7 @@
 # Changelog
 
 ## [0.7.6]
-- Fix install (Fix Call to a member function getName() on null (Because not use ILIAS primary key))
+- Fix install (Fix Call to a member function getName() on null (Because not use ILIAS sequence))
 
 ## [0.7.5]
 - Fixes
