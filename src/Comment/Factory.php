@@ -3,6 +3,7 @@
 namespace srag\CommentsUI\Comment;
 
 use ilDateTime;
+use srag\CommentsUI\Comment\Comment as CommentInterface;
 use srag\DIC\DICTrait;
 use stdClass;
 
@@ -18,47 +19,37 @@ final class Factory implements FactoryInterface
 
     use DICTrait;
     /**
-     * @var FactoryInterface[]
+     * @var FactoryInterface|null
      */
-    protected static $instances = [];
+    protected static $instance = null;
 
 
     /**
-     * @param string $comment_class
-     *
      * @return FactoryInterface
      */
-    public static function getInstance(string $comment_class) : FactoryInterface
+    public static function getInstance() : FactoryInterface
     {
-        if (!isset(self::$instances[$comment_class])) {
-            self::$instances[$comment_class] = new self($comment_class);
+        if (self::$instance === null) {
+            self::$instance = new self();
         }
 
-        return self::$instances[$comment_class];
+        return self::$instance;
     }
 
 
     /**
-     * @var string|Comment
-     */
-    protected $comment_class;
-
-
-    /**
      * Factory constructor
-     *
-     * @param string $comment_class
      */
-    private function __construct(string $comment_class)
+    private function __construct()
     {
-        $this->comment_class = $comment_class;
+
     }
 
 
     /**
      * @inheritdoc
      */
-    public function fromDB(stdClass $data) : Comment
+    public function fromDB(stdClass $data) : CommentInterface
     {
         $comment = $this->newInstance();
 
@@ -80,9 +71,9 @@ final class Factory implements FactoryInterface
     /**
      * @inheritdoc
      */
-    public function newInstance() : Comment
+    public function newInstance() : CommentInterface
     {
-        $comment = new $this->comment_class();
+        $comment = new AbstractComment();
 
         return $comment;
     }
