@@ -16,14 +16,6 @@ interface Comment extends JsonSerializable
 {
 
     /**
-     * @var string
-     *
-     * @abstract
-     */
-    const TABLE_NAME = "";
-
-
-    /**
      * @return int
      */
     public function getId() : int;

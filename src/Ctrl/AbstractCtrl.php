@@ -2,8 +2,6 @@
 
 namespace srag\CommentsUI\Ctrl;
 
-use srag\CommentsUI\Comment\Repository;
-use srag\CommentsUI\Comment\RepositoryInterface;
 use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 
@@ -19,21 +17,6 @@ abstract class AbstractCtrl implements CtrlInterface
 
     use DICTrait;
     use CommentsUITrait;
-    /**
-     * @var string
-     *
-     * @abstract
-     */
-    const COMMENTS_CLASS_NAME = "";
-
-
-    /**
-     * @inheritdoc
-     */
-    protected static function comments() : RepositoryInterface
-    {
-        return Repository::getInstance(static::COMMENTS_CLASS_NAME);
-    }
 
 
     /**

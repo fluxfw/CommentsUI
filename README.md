@@ -17,16 +17,21 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
-#### Comment ActiveRecord
-First you need to implement a `Comment` active record class with your own table name
+#### Trait usage
+Your class in this you want to use CommentsUI needs to use the trait `CommentsUITrait`
 ```php
 ...
-use srag\CommentsUI\x\Comment\AbstractComment;
+use srag\CommentsUI\x\Utils\CommentsUITrait;
 ...
-class Comment extends AbstractComment {
+class x {
+...
+use CommentsUITrait;
+...
+```
 
-	const TABLE_NAME = "x";
-}
+#### Comment ActiveRecord
+First you need to init the `Comment` active record class with your own table name prefix. Please add this very early in your plugin code
+self::comments()->withTableNamePrefix(self::COMMENT_TABLE_NAME_PREFIX)->withPlugin(self::plugin());
 ```
 
 Add an update step to your `dbupdate.php`
@@ -34,16 +39,14 @@ Add an update step to your `dbupdate.php`
 ...
 <#x>
 <?php
-\srag\Plugins\x\Comment\Comment::updateDB_();
+\srag\CommentsUI\x\Comment\Repository::getInstance()->installTables();
 ?>
 ```
 
 and not forget to add an uninstaller step in your plugin class too
 ```php
 ...
-use srag\Plugins\x\Comment\Comment;
-...
-Comment::dropDB_();
+self::comments()->dropTables();
 ...
 ```
 
@@ -51,7 +54,6 @@ Comment::dropDB_();
 ```php
 ...
 use srag\CommentsUI\x\Ctrl\AbstractCtrl;
-use srag\Plugins\x\Comment\Comment;
 ...
 /**
  * ...
@@ -59,9 +61,6 @@ use srag\Plugins\x\Comment\Comment;
  * @ilCtrl_isCalledBy srag\Plugins\x\Comment\Ctrl\XCtrl: ilUIPluginRouterGUI
  */
 class XCtrl extends AbstractCtrl {
-	...
-	const COMMENTS_CLASS_NAME = Comment::class;
-	...
 	/**
 	 * @inheritdoc
 	 */
@@ -81,21 +80,8 @@ Expand you plugin class for installing languages of the library to your plugin
 	public function updateLanguages($a_lang_keys = null) {
 		parent::updateLanguages($a_lang_keys);
 
-		LibraryLanguageInstaller::getInstance()->withPlugin(self::plugin())->withLibraryLanguageDirectory(__DIR__ . "/../vendor/srag/commentsui/lang")
-			->updateLanguages($a_lang_keys);
+		self::comments()->installLanguages();
 	}
-...
-```
-
-#### Trait usage
-Your class in this you want to use CommentsUI needs to use the trait `CommentsUITrait`
-```php
-...
-use srag\CommentsUI\x\Utils\CommentsUITrait;
-...
-class x {
-...
-use CommentsUITrait;
 ...
 ```
 
@@ -104,7 +90,7 @@ use CommentsUITrait;
 ...
 use srag\Plugins\x\Comment\Ctrl\XCtrl;
 ...
-self::output()->getHTML(self::commentsUI()->withPlugin(self::plugin())->withCtrlClass(new XCtrl()));
+self::output()->getHTML(self::commentsUI()->withCtrlClass(new XCtrl()));
 ```
 
 ### Requirements

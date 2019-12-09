@@ -4,8 +4,8 @@ namespace srag\CommentsUI\UI;
 
 use ilTemplate;
 use srag\CommentsUI\Ctrl\CtrlInterface;
+use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
-use srag\DIC\Plugin\PluginInterface;
 
 /**
  * Class UI
@@ -18,6 +18,7 @@ class UI implements UIInterface
 {
 
     use DICTrait;
+    use CommentsUITrait;
     /**
      * @var bool
      */
@@ -30,10 +31,6 @@ class UI implements UIInterface
      * @var CtrlInterface
      */
     protected $ctrl_class;
-    /**
-     * @var PluginInterface|null
-     */
-    protected $plugin = null;
 
 
     /**
@@ -51,26 +48,6 @@ class UI implements UIInterface
     public function withId(string $id) : UIInterface
     {
         $this->id = $id;
-
-        return $this;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function getPlugin() : PluginInterface
-    {
-        return $this->plugin;
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function withPlugin(PluginInterface $plugin) : self
-    {
-        $this->plugin = $plugin;
 
         return $this;
     }
@@ -138,7 +115,7 @@ class UI implements UIInterface
     protected function getLanguageStrings() : array
     {
         return array_map(function (string $key) : string {
-            return $this->getPlugin()->translate($key, self::LANG_MODULE_COMMENTSUI);
+            return self::comments()->getPlugin()->translate($key, self::LANG_MODULE_COMMENTSUI);
         }, [
             "deleteText"              => "delete",
             "editText"                => "edit",

@@ -2,6 +2,7 @@
 
 namespace srag\CommentsUI\Comment;
 
+use srag\DIC\Plugin\Pluginable;
 use stdClass;
 
 /**
@@ -11,7 +12,7 @@ use stdClass;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-interface RepositoryInterface
+interface RepositoryInterface extends Pluginable
 {
 
     /**
@@ -51,6 +52,12 @@ interface RepositoryInterface
 
 
     /**
+     *
+     */
+    public function dropTables()/*: void*/ ;
+
+
+    /**
      * @return FactoryInterface
      */
     public function factory() : FactoryInterface;
@@ -82,6 +89,24 @@ interface RepositoryInterface
 
 
     /**
+     * @return string
+     */
+    public function getTableNamePrefix() : string;
+
+
+    /**
+     *
+     */
+    public function installLanguages()/*:void*/ ;
+
+
+    /**
+     *
+     */
+    public function installTables()/*:void*/ ;
+
+
+    /**
      * @param Comment $comment
      */
     public function shareComment(Comment $comment)/*: void*/ ;
@@ -108,4 +133,12 @@ interface RepositoryInterface
      * @return self
      */
     public function withOutputObjectTitles(bool $output_object_titles = false) : self;
+
+
+    /**
+     * @param string $table_name_prefix
+     *
+     * @return self
+     */
+    public function withTableNamePrefix(string $table_name_prefix) : self;
 }
