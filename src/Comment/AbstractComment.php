@@ -7,7 +7,6 @@ use arConnector;
 use srag\CommentsUI\Utils\CommentsUITrait;
 use srag\DIC\DICTrait;
 use stdClass;
-use Throwable;
 
 /**
  * Class AbstractComment
@@ -16,19 +15,20 @@ use Throwable;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-abstract class AbstractComment extends ActiveRecord implements Comment
+class AbstractComment extends ActiveRecord implements Comment
 {
 
     use DICTrait;
     use CommentsUITrait;
+    const TABLE_NAME_SUFFIX = "com";
 
 
     /**
-     * @inheritdoc
+     * @return string
      */
-    protected static function comments() : RepositoryInterface
+    public static function getTableName() : string
     {
-        return Repository::getInstance(static::class);
+        return self::comments()->getTableNamePrefix() . "_" . self::TABLE_NAME_SUFFIX;
     }
 
 
@@ -37,7 +37,7 @@ abstract class AbstractComment extends ActiveRecord implements Comment
      */
     public function getConnectorContainerName()
     {
-        return static::TABLE_NAME;
+        return static::getTableName();
     }
 
 
@@ -48,37 +48,7 @@ abstract class AbstractComment extends ActiveRecord implements Comment
      */
     public static function returnDbTableName()
     {
-        return static::TABLE_NAME;
-    }
-
-
-    /**
-     *
-     */
-    public static function updateDB_()/*: void*/
-    {
-        try {
-            self::updateDB();
-        } catch (Throwable $ex) {
-            // Fix Call to a member function getName() on null (Because not use ILIAS sequence)
-        }
-
-        if (self::dic()->database()->sequenceExists(static::TABLE_NAME)) {
-            self::dic()->database()->dropSequence(static::TABLE_NAME);
-        }
-
-        self::dic()->database()->createAutoIncrement(static::TABLE_NAME, "id");
-    }
-
-
-    /**
-     *
-     */
-    public static function dropDB_()/*: void*/
-    {
-        self::dic()->database()->dropTable(static::TABLE_NAME, false);
-
-        self::dic()->database()->dropAutoIncrementTable(static::TABLE_NAME);
+        return static::getTableName();
     }
 
 

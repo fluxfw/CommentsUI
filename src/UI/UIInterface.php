@@ -3,7 +3,6 @@
 namespace srag\CommentsUI\UI;
 
 use srag\CommentsUI\Ctrl\CtrlInterface;
-use srag\DIC\Plugin\Pluginable;
 
 /**
  * Interface UIInterface
@@ -12,7 +11,7 @@ use srag\DIC\Plugin\Pluginable;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-interface UIInterface extends Pluginable
+interface UIInterface
 {
 
     const LANG_MODULE_COMMENTSUI = "commentsui";

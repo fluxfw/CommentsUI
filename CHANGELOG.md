@@ -1,5 +1,8 @@
 # Changelog
 
+## [0.8.0]
+- Improvments
+
 ## [0.7.7]
 - Remove unused jquery (Uses the ILIAS core version)
 

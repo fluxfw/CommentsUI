@@ -18,13 +18,11 @@ trait CommentsUITrait
 {
 
     /**
-     * @param string $comment_class
-     *
      * @return RepositoryInterface
      */
-    protected static function comments(string $comment_class) : RepositoryInterface
+    protected static function comments() : RepositoryInterface
     {
-        return Repository::getInstance($comment_class);
+        return Repository::getInstance();
     }
 
 
