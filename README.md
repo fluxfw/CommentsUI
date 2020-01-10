@@ -62,7 +62,7 @@ use srag\CommentsUI\x\Ctrl\AbstractCtrl;
  */
 class XCtrl extends AbstractCtrl {
 	/**
-	 * @inheritdoc
+	 * @inheritDoc
 	 */
 	public function getCommentsArray(int $report_obj_id, int $report_user_id): array {
 		...
@@ -75,9 +75,9 @@ Expand you plugin class for installing languages of the library to your plugin
 ```php
 ...
 	/**
-	 * @inheritdoc
-	 */
-	public function updateLanguages($a_lang_keys = null) {
+     * @inheritDoc
+     */
+    public function updateLanguages(/*?array*/ $a_lang_keys = null)/*:void*/ {
 		parent::updateLanguages($a_lang_keys);
 
 		self::comments()->installLanguages();
