@@ -155,7 +155,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getId() : int
     {
@@ -164,7 +164,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setId(int $id)/*: void*/
     {
@@ -173,7 +173,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getComment() : string
     {
@@ -182,7 +182,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setComment(string $comment)/*: void*/
     {
@@ -191,7 +191,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getReportObjId() : int
     {
@@ -200,7 +200,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setReportObjId(int $report_obj_id)/*: void*/
     {
@@ -209,7 +209,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getReportUserId() : int
     {
@@ -218,7 +218,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setReportUserId(int $report_user_id)/*: void*/
     {
@@ -227,7 +227,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getCreatedTimestamp() : int
     {
@@ -236,7 +236,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setCreatedTimestamp(int $created_timestamp)/*: void*/
     {
@@ -245,7 +245,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getCreatedUserId() : int
     {
@@ -254,7 +254,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setCreatedUserId(int $created_user_id)/*: void*/
     {
@@ -263,7 +263,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getUpdatedTimestamp() : int
     {
@@ -272,7 +272,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setUpdatedTimestamp(int $updated_timestamp)/*: void*/
     {
@@ -281,7 +281,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getUpdatedUserId() : int
     {
@@ -290,7 +290,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setUpdatedUserId(int $updated_user_id)/*: void*/
     {
@@ -299,7 +299,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isShared() : bool
     {
@@ -308,7 +308,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setIsShared(bool $is_shared)/*: void*/
     {
@@ -317,7 +317,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function isDeleted() : bool
     {
@@ -326,7 +326,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function setDeleted(bool $deleted)/*: void*/
     {
@@ -335,7 +335,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function jsonSerialize() : stdClass
     {

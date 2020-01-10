@@ -67,7 +67,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function canBeDeleted(CommentInterface $comment) : bool
     {
@@ -88,7 +88,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function canBeShared(CommentInterface $comment) : bool
     {
@@ -109,7 +109,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function canBeStored(CommentInterface $comment) : bool
     {
@@ -132,7 +132,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function deleteComment(CommentInterface $comment)/*: void*/
     {
@@ -158,7 +158,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function factory() : FactoryInterface
     {
@@ -167,7 +167,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getCommentById(int $id)/*: ?CommentInterface*/
     {
@@ -185,7 +185,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getCommentsForReport(int $report_obj_id, int $report_user_id) : array
     {
@@ -208,7 +208,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getCommentsForCurrentUser(/*?int*/ $report_obj_id = null) : array
     {
@@ -304,7 +304,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function shareComment(CommentInterface $comment)/*: void*/
     {
@@ -319,7 +319,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function storeComment(CommentInterface $comment, bool $check_can_be_store = true)/*: void*/
     {
@@ -352,7 +352,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function toJson(CommentInterface $comment) : stdClass
     {
@@ -377,7 +377,7 @@ final class Repository implements RepositoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withOutputObjectTitles(bool $output_object_titles = false) : RepositoryInterface
     {

@@ -43,7 +43,7 @@ class UI implements UIInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withId(string $id) : UIInterface
     {
@@ -54,7 +54,7 @@ class UI implements UIInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function withCtrlClass(CtrlInterface $ctrl_class) : UIInterface
     {
@@ -91,7 +91,7 @@ class UI implements UIInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function render() : string
     {

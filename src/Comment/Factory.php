@@ -47,7 +47,7 @@ final class Factory implements FactoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function fromDB(stdClass $data) : CommentInterface
     {
@@ -69,7 +69,7 @@ final class Factory implements FactoryInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function newInstance() : CommentInterface
     {
