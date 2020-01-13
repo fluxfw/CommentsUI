@@ -35,7 +35,7 @@ class AbstractComment extends ActiveRecord implements Comment
     /**
      * @return string
      */
-    public function getConnectorContainerName()
+    public function getConnectorContainerName() : string
     {
         return static::getTableName();
     }
@@ -46,7 +46,7 @@ class AbstractComment extends ActiveRecord implements Comment
      *
      * @deprecated
      */
-    public static function returnDbTableName()
+    public static function returnDbTableName() : string
     {
         return static::getTableName();
     }
