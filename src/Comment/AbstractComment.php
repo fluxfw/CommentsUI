@@ -33,7 +33,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @return string
+     * @inheritDoc
      */
     public function getConnectorContainerName() : string
     {
@@ -42,7 +42,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * @return string
+     * @inheritDoc
      *
      * @deprecated
      */
