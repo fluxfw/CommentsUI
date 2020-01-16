@@ -29,7 +29,7 @@ abstract class AbstractCtrl implements CtrlInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function executeCommand()/*: void*/
     {
@@ -130,7 +130,7 @@ abstract class AbstractCtrl implements CtrlInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getIsReadOnly() : bool
     {
@@ -139,7 +139,7 @@ abstract class AbstractCtrl implements CtrlInterface
 
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function getAsyncBaseUrl() : string
     {
