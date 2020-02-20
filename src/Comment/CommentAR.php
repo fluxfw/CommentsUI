@@ -9,13 +9,13 @@ use srag\DIC\DICTrait;
 use stdClass;
 
 /**
- * Class AbstractComment
+ * Class CommentAR
  *
  * @package srag\CommentsUI\Comment
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class AbstractComment extends ActiveRecord implements Comment
+class CommentAR extends ActiveRecord implements Comment
 {
 
     use DICTrait;
@@ -143,7 +143,7 @@ class AbstractComment extends ActiveRecord implements Comment
 
 
     /**
-     * AbstractComment constructor
+     * CommentAR constructor
      *
      * @param int              $primary_key_value
      * @param arConnector|null $connector

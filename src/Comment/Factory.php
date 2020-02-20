@@ -3,7 +3,6 @@
 namespace srag\CommentsUI\Comment;
 
 use ilDateTime;
-use srag\CommentsUI\Comment\Comment as CommentInterface;
 use srag\DIC\DICTrait;
 use stdClass;
 
@@ -49,7 +48,7 @@ final class Factory implements FactoryInterface
     /**
      * @inheritDoc
      */
-    public function fromDB(stdClass $data) : CommentInterface
+    public function fromDB(stdClass $data) : Comment
     {
         $comment = $this->newInstance();
 
@@ -71,9 +70,9 @@ final class Factory implements FactoryInterface
     /**
      * @inheritDoc
      */
-    public function newInstance() : CommentInterface
+    public function newInstance() : Comment
     {
-        $comment = new AbstractComment();
+        $comment = new CommentAR();
 
         return $comment;
     }
