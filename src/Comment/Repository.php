@@ -6,7 +6,6 @@ use ilDateTime;
 use ilDBConstants;
 use ilObjUser;
 use LogicException;
-use srag\CommentsUI\Comment\Comment as CommentInterface;
 use srag\DIC\DICTrait;
 use srag\DIC\Plugin\PluginInterface;
 use srag\DIC\Util\LibraryLanguageInstaller;
@@ -69,7 +68,7 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function canBeDeleted(CommentInterface $comment) : bool
+    public function canBeDeleted(Comment $comment) : bool
     {
         if (empty($comment->getId())) {
             return false;
@@ -90,7 +89,7 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function canBeShared(CommentInterface $comment) : bool
+    public function canBeShared(Comment $comment) : bool
     {
         if (empty($comment->getId())) {
             return false;
@@ -111,7 +110,7 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function canBeStored(CommentInterface $comment) : bool
+    public function canBeStored(Comment $comment) : bool
     {
         if (empty($comment->getId())) {
             return true;
@@ -134,7 +133,7 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function deleteComment(CommentInterface $comment)/*: void*/
+    public function deleteComment(Comment $comment)/*: void*/
     {
         if (!$this->canBeDeleted($comment)) {
             return;
@@ -151,9 +150,9 @@ final class Repository implements RepositoryInterface
      */
     public function dropTables()/*: void*/
     {
-        self::dic()->database()->dropTable(AbstractComment::getTableName(), false);
+        self::dic()->database()->dropTable(CommentAR::getTableName(), false);
 
-        self::dic()->database()->dropAutoIncrementTable(AbstractComment::getTableName());
+        self::dic()->database()->dropAutoIncrementTable(CommentAR::getTableName());
     }
 
 
@@ -169,13 +168,13 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function getCommentById(int $id)/*: ?CommentInterface*/
+    public function getCommentById(int $id)/*: ?Comment*/
     {
         /**
-         * @var CommentInterface|null $comment
+         * @var Comment|null $comment
          */
         $comment = self::dic()->database()->fetchObjectCallback(self::dic()->database()->queryF('SELECT * FROM ' . self::dic()->database()
-                ->quoteIdentifier(AbstractComment::getTableName()) . ' WHERE id=%s', [ilDBConstants::T_INTEGER], [$id]), [
+                ->quoteIdentifier(CommentAR::getTableName()) . ' WHERE id=%s', [ilDBConstants::T_INTEGER], [$id]), [
             $this->factory(),
             "fromDB"
         ]);
@@ -190,10 +189,10 @@ final class Repository implements RepositoryInterface
     public function getCommentsForReport(int $report_obj_id, int $report_user_id) : array
     {
         /**
-         * @var CommentInterface[] $comments
+         * @var Comment[] $comments
          */
         $comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF('SELECT * FROM ' . self::dic()->database()
-                ->quoteIdentifier(AbstractComment::getTableName())
+                ->quoteIdentifier(CommentAR::getTableName())
             . ' WHERE deleted=%s AND report_obj_id=%s AND report_user_id=%s ORDER BY updated_timestamp DESC', [
             ilDBConstants::T_INTEGER,
             ilDBConstants::T_INTEGER,
@@ -235,10 +234,10 @@ final class Repository implements RepositoryInterface
         }
 
         /**
-         * @var CommentInterface[] $comments
+         * @var Comment[] $comments
          */
         $comments = array_values(self::dic()->database()->fetchAllCallback(self::dic()->database()->queryF('SELECT * FROM ' . self::dic()->database()
-                ->quoteIdentifier(AbstractComment::getTableName()) . ' WHERE ' . implode(' AND ', $where)
+                ->quoteIdentifier(CommentAR::getTableName()) . ' WHERE ' . implode(' AND ', $where)
             . ' ORDER BY updated_timestamp DESC', $types, $values), [
             $this->factory(),
             "fromDB"
@@ -290,23 +289,23 @@ final class Repository implements RepositoryInterface
     public function installTables()/*:void*/
     {
         try {
-            AbstractComment::updateDB();
+            CommentAR::updateDB();
         } catch (Throwable $ex) {
             // Fix Call to a member function getName() on null (Because not use ILIAS sequence)
         }
 
-        if (self::dic()->database()->sequenceExists(AbstractComment::getTableName())) {
-            self::dic()->database()->dropSequence(AbstractComment::getTableName());
+        if (self::dic()->database()->sequenceExists(CommentAR::getTableName())) {
+            self::dic()->database()->dropSequence(CommentAR::getTableName());
         }
 
-        self::dic()->database()->createAutoIncrement(AbstractComment::getTableName(), "id");
+        self::dic()->database()->createAutoIncrement(CommentAR::getTableName(), "id");
     }
 
 
     /**
      * @inheritDoc
      */
-    public function shareComment(CommentInterface $comment)/*: void*/
+    public function shareComment(Comment $comment)/*: void*/
     {
         if (!$this->canBeShared($comment)) {
             return;
@@ -321,7 +320,7 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function storeComment(CommentInterface $comment, bool $check_can_be_store = true)/*: void*/
+    public function storeComment(Comment $comment, bool $check_can_be_store = true)/*: void*/
     {
         if ($check_can_be_store && !$this->canBeStored($comment)) {
             return;
@@ -337,7 +336,7 @@ final class Repository implements RepositoryInterface
         $comment->setUpdatedTimestamp($time);
         $comment->setUpdatedUserId(self::dic()->user()->getId());
 
-        self::dic()->database()->store(AbstractComment::getTableName(), [
+        $comment->setId(self::dic()->database()->store(CommentAR::getTableName(), [
             "comment"           => [ilDBConstants::T_TEXT, $comment->getComment()],
             "report_obj_id"     => [ilDBConstants::T_INTEGER, $comment->getReportObjId()],
             "report_user_id"    => [ilDBConstants::T_INTEGER, $comment->getReportUserId()],
@@ -347,14 +346,14 @@ final class Repository implements RepositoryInterface
             "updated_user_id"   => [ilDBConstants::T_INTEGER, $comment->getUpdatedUserId()],
             "is_shared"         => [ilDBConstants::T_INTEGER, $comment->isShared()],
             "deleted"           => [ilDBConstants::T_INTEGER, $comment->isDeleted()]
-        ], "id", $comment->getId());
+        ], "id", $comment->getId()));
     }
 
 
     /**
      * @inheritDoc
      */
-    public function toJson(CommentInterface $comment) : stdClass
+    public function toJson(Comment $comment) : stdClass
     {
         $content = $comment->getComment();
 

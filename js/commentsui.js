@@ -1,6 +1,6 @@
 /**
  * @param {string} container_id
- * @param {bool} readonly
+ * @param {boolean} readonly
  * @param {string} async_base_url
  *
  * @constructor
@@ -24,7 +24,7 @@ il.CommentsUI.INSTANCES = [];
 
 /**
  * @param {string} container_id
- * @param {bool} readonly
+ * @param {boolean} readonly
  * @param {string} async_base_url
  */
 il.CommentsUI.newInstance = function (container_id = "", readonly = false, async_base_url = "") {
