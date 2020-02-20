@@ -337,7 +337,7 @@ final class Repository implements RepositoryInterface
         $comment->setUpdatedTimestamp($time);
         $comment->setUpdatedUserId(self::dic()->user()->getId());
 
-        self::dic()->database()->store(AbstractComment::getTableName(), [
+        $comment->setId(self::dic()->database()->store(AbstractComment::getTableName(), [
             "comment"           => [ilDBConstants::T_TEXT, $comment->getComment()],
             "report_obj_id"     => [ilDBConstants::T_INTEGER, $comment->getReportObjId()],
             "report_user_id"    => [ilDBConstants::T_INTEGER, $comment->getReportUserId()],
@@ -347,7 +347,7 @@ final class Repository implements RepositoryInterface
             "updated_user_id"   => [ilDBConstants::T_INTEGER, $comment->getUpdatedUserId()],
             "is_shared"         => [ilDBConstants::T_INTEGER, $comment->isShared()],
             "deleted"           => [ilDBConstants::T_INTEGER, $comment->isDeleted()]
-        ], "id", $comment->getId());
+        ], "id", $comment->getId()));
     }
 
 
