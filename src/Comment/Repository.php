@@ -141,9 +141,9 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function deleteComment(Comment $comment) : void
+    public function deleteComment(Comment $comment, bool $check_can_be_deleted = true) : void
     {
-        if (!$this->canBeDeleted($comment)) {
+        if ($check_can_be_deleted && !$this->canBeDeleted($comment)) {
             return;
         }
 
@@ -159,7 +159,7 @@ final class Repository implements RepositoryInterface
     public function deleteUserComments(int $report_user_id) : void
     {
         foreach ($this->getCommentsForCurrentUser(null, $report_user_id) as $comment) {
-            $this->deleteComment($comment);
+            $this->deleteComment($comment, false);
         }
     }
 
@@ -352,9 +352,9 @@ final class Repository implements RepositoryInterface
     /**
      * @inheritDoc
      */
-    public function storeComment(Comment $comment, bool $check_can_be_store = true) : void
+    public function storeComment(Comment $comment, bool $check_can_be_stored = true) : void
     {
-        if ($check_can_be_store && !$this->canBeStored($comment)) {
+        if ($check_can_be_stored && !$this->canBeStored($comment)) {
             return;
         }
 
