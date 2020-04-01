@@ -159,7 +159,7 @@ final class Repository implements RepositoryInterface
     public function deleteUserComments(int $report_user_id) : void
     {
         foreach ($this->getCommentsForCurrentUser(null, $report_user_id) as $comment) {
-            $this->deleteComment($comment);
+            $this->deleteComment($comment, false);
         }
     }
 
