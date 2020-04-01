@@ -47,8 +47,9 @@ interface RepositoryInterface extends Pluginable
 
     /**
      * @param Comment $comment
+     * @param bool    $check_can_be_deleted
      */
-    public function deleteComment(Comment $comment) : void;
+    public function deleteComment(Comment $comment, bool $check_can_be_deleted = true) : void;
 
 
     /**
@@ -127,9 +128,9 @@ interface RepositoryInterface extends Pluginable
 
     /**
      * @param Comment $comment
-     * @param bool    $check_can_be_store
+     * @param bool    $check_can_be_stored
      */
-    public function storeComment(Comment $comment, bool $check_can_be_store = true) : void;
+    public function storeComment(Comment $comment, bool $check_can_be_stored = true) : void;
 
 
     /**
