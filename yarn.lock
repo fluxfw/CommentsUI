@@ -6,10 +6,3 @@ jquery-comments@1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/jquery-comments/-/jquery-comments-1.0.1.tgz#618c0cd7d1df3ca8d2a240872b27bf4391706153"
   integrity sha1-YYwM19HfPKjSokCHKye/Q5FwYVM=
-  dependencies:
-    jquery ">=1.9.0"
-
-jquery@>=1.9.0:
-  version "3.5.1"
-  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
-  integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
