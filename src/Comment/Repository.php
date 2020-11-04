@@ -8,7 +8,7 @@ use ilObjUser;
 use LogicException;
 use srag\DIC\DICTrait;
 use srag\DIC\Plugin\PluginInterface;
-use srag\DIC\Util\LibraryLanguageInstaller;
+use srag\LibraryLanguageInstaller\LibraryLanguageInstaller;
 use stdClass;
 use Throwable;
 
