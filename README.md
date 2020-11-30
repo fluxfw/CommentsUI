@@ -124,5 +124,6 @@ self::output()->getHTML(self::commentsUI()->withCtrlClass(new XCtrl()));
 
 ## Adjustment suggestions
 
-* External users can report suggestions and bugs at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LCOMMENTSUI
-* Adjustment suggestions by pull requests via github
+You can report bugs or suggestions at https://plugins.studer-raimann.ch/goto.php?target=uihk_srsu_LCOMMENTSUI
+
+There is no guarantee this can be fixed or implemented
