@@ -11,9 +11,9 @@
   },
   "type": "library",
   "keywords": [
-    "ILIAS",
-    "Comments",
-    "UI"
+    "comments",
+    "ilias",
+    "ui"
   ],
   "homepage": "https://github.com/studer-raimann/CommentsUI",
   "license": "GPL-3.0-only",
