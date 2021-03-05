@@ -157,7 +157,7 @@ class UI implements UIInterface
             self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../node_modules/jquery-comments/js/jquery-comments.js"));
             self::dic()->ui()->mainTemplate()->addCss($version_parameter->appendToUrl($dir . "/../../node_modules/jquery-comments/css/jquery-comments.css"));
 
-            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../js/commentsui.min.js"));
+            self::dic()->ui()->mainTemplate()->addJavaScript($version_parameter->appendToUrl($dir . "/../../js/commentsui.min.js", $dir . "/../../js/commentsui.js"));
             self::dic()->ui()->mainTemplate()->addCss($version_parameter->appendToUrl($dir . "/../../css/commentsui.css"));
 
             $tpl->setCurrentBlock("init");
