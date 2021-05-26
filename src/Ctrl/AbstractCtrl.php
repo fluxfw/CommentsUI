@@ -9,8 +9,6 @@ use srag\DIC\DICTrait;
  * Class AbstractCtrl
  *
  * @package srag\CommentsUI\Ctrl
- *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
 abstract class AbstractCtrl implements CtrlInterface
 {
