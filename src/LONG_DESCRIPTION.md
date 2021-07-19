@@ -18,10 +18,6 @@ Tip: Because of multiple autoloaders of plugins, it could be, that different ver
 
 So I recommand to use [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger) in your plugin.
 
-### PHP 7.0
-
-You can use this library with PHP 7.0 by using the `PHP72Backport` from [srag/librariesnamespacechanger](https://packagist.org/packages/srag/librariesnamespacechanger)
-
 ## Trait usage
 
 Your class in this you want to use CommentsUI needs to use the trait `CommentsUITrait`
@@ -90,7 +86,7 @@ Expand you plugin class for installing languages of the library to your plugin
 	/**
      * @inheritDoc
      */
-    public function updateLanguages(/*?array*/ $a_lang_keys = null)/*:void*/ {
+    public function updateLanguages(/*?array*/ $a_lang_keys = null) : void {
 		parent::updateLanguages($a_lang_keys);
 
 		self::comments()->installLanguages();
