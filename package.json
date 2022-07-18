@@ -7,9 +7,6 @@
     "UI"
   ],
   "license": "GPL-3.0-only",
-  "contributors": [
-    "fluxlabs <support@fluxlabs.ch> (https://fluxlabs.ch)"
-  ],
   "dependencies": {
     "jquery-comments": "1.0.1"
   },
